@@ -44,12 +44,12 @@ if (!isset($_SESSION['username'])) {
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/dashboard-siswa.html">
+      <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">dashboard</i>
+              <i class="material-icons opacity-10">task_alt</i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Presensi</span>
           </a>
         </li>
         <li class="nav-item mt-3">
@@ -98,11 +98,20 @@ if (!isset($_SESSION['username'])) {
 
           </div>
           <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+            <li class="nav-item dropdown pe-0 d-flex align-items-center">
+              <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
+              <a href="javascript:;" class="nav-link text-body p-0" id="UserdropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user me-sm-0"></i>
+                <span class="d-sm-inline d-none"><?php echo htmlspecialchars($_SESSION['name']); ?></span>
               </a>
+              <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
+                <li>
+                  <a class="dropdown-item border-radius-md" href="logout.php">
+                    <i class="fa fa-sign-out me-sm-1"></i>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -380,6 +389,24 @@ if (!isset($_SESSION['username'])) {
         Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
       }
     </script>
+      <!-- Script Waktu -->
+  <!-- Di bagian bawah sebelum tag </body> -->
+<script>
+  // Fungsi untuk menampilkan jam saat ini
+  function displayCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    document.getElementById('current-time').innerText = `${hours}:${minutes}:${seconds}`;
+  }
+
+  // Panggil fungsi untuk menampilkan jam pertama kali
+  displayCurrentTime();
+
+  // Atur agar fungsi displayCurrentTime dipanggil setiap detik
+  setInterval(displayCurrentTime, 1000);
+</script>
     <!-- Github buttons -->
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

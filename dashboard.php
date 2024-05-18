@@ -71,11 +71,11 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/generate-qr.html">
+          <a class="nav-link text-white" href="../pages/atur-presensi.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">qr_code</i>
+              <i class="material-icons opacity-10">rule</i>
             </div>
-            <span class="nav-link-text ms-1">Generate QR CODE</span>
+            <span class="nav-link-text ms-1">Atur Presensi</span>
           </a>
         </li>
         <li class="nav-item">
@@ -87,11 +87,11 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/dashboard-siswa.html">
+          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">photo_camera</i>
+              <i class="material-icons opacity-10">task_alt</i>
             </div>
-            <span class="nav-link-text ms-1">Scan</span>
+            <span class="nav-link-text ms-1">Presensi</span>
           </a>
         </li>
         <li class="nav-item mt-3">
@@ -128,23 +128,34 @@ $is_connect->close();
     <!-- Navbar -->
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
       navbar-scroll="true">
-      <div class="container-fluid py-1 px-3">
+      <div class="container-fluid pt-3 px-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
             <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
           </ol>
         </nav>
-        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+        <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 " id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
           </div>
           <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
+            <li class="nav-item dropdown pe-0 d-flex align-items-center">
+              <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
+              <a href="javascript:;" class="nav-link text-body p-0" id="UserdropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user me-sm-0"></i>
                 <span class="d-sm-inline d-none"><?php echo htmlspecialchars($_SESSION['name']); ?></span>
               </a>
+              <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
+                <li>
+                  <a class="dropdown-item border-radius-md" href="logout.php">
+                    <i class="fa fa-sign-out me-sm-1"></i>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
             </li>
+
+
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
                 <div class="sidenav-toggler-inner">
@@ -180,8 +191,8 @@ $is_connect->close();
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row">
-        <div class="mt-4 mb-5 col-12 grid-margin">
+      <div class="row justify-content-center">
+        <div class="mt-4 mb-5 col-lg-9 grid-margin">
           <div class="card">
             <div class="p-2 pt-2">
               <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2 bg-transparent">
@@ -195,7 +206,7 @@ $is_connect->close();
               <div class="mx-3 position-relative p-0">
                 <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
                   <div class="carousel-inner">
-                    <div class="carousel-item active  ">
+                    <div class="carousel-item active">
                       <div class="card bg-light shadow-sm">
                         <div
                           class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
@@ -218,11 +229,11 @@ $is_connect->close();
                         <?php foreach ($ekstraData as $data) { ?>
                           <li class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
-                              <?php echo $data["nama_ekstra"]; }?>
-                              <a href="../pages/dashboard-ekstra1.html" class="btn btn-sm btn-outline-primary">Masuk</a> <br>
-                              <a href="../pages/dashboard-ekstra1.html" class="btn btn-sm btn-outline-primary">Masuk</a>
+                              <span><?php echo $data["nama_ekstra"]; ?></span>
+                              <a href="../pages/dashboard-ekstra1.html" class="btn btn-sm btn-outline-primary"">Masuk</a>
                             </div>
                           </li>
+                        <?php } ?>
                         </ul>
                       </div>
                     </div>
@@ -695,6 +706,24 @@ $is_connect->close();
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
+    <!-- Script Waktu -->
+  <!-- Di bagian bawah sebelum tag </body> -->
+<script>
+  // Fungsi untuk menampilkan jam saat ini
+  function displayCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    document.getElementById('current-time').innerText = `${hours}:${minutes}:${seconds}`;
+  }
+
+  // Panggil fungsi untuk menampilkan jam pertama kali
+  displayCurrentTime();
+
+  // Atur agar fungsi displayCurrentTime dipanggil setiap detik
+  setInterval(displayCurrentTime, 1000);
+</script>
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

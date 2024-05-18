@@ -46,7 +46,7 @@ if (!isset($_SESSION['username'])) {
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../pages/dashboard-siswa.html">
+          <a class="nav-link text-white active bg-gradient-info" href="../dashboard.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -57,7 +57,7 @@ if (!isset($_SESSION['username'])) {
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile-siswa.php">
+          <a class="nav-link text-white " href="../pages/profile-siswa.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -73,7 +73,7 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
+          <a class="nav-link text-white " href="../pages/register.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">assignment</i>
             </div>
@@ -91,19 +91,28 @@ if (!isset($_SESSION['username'])) {
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Scan</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard Siswa</li>
           </ol>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            
           </div>
-          <ul class="navbar-nav  justify-content-end">
-            <li class="nav-item d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Sign In</span>
+          <ul class="navbar-nav  justify-content-end align-items-center">
+            <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
+            <li class="nav-item dropdown pe-0 d-flex align-items-center">
+              <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
+              <a href="javascript:;" class="nav-link text-body p-0" id="UserdropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-user me-sm-0"></i>
+                <span class="d-sm-inline d-none"><?php echo htmlspecialchars($_SESSION['name']); ?></span>
               </a>
+              <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
+                <li>
+                  <a class="dropdown-item border-radius-md" href="logout.php">
+                    <i class="fa fa-sign-out me-sm-1"></i>
+                    <span>Logout</span>
+                  </a>
+                </li>
+              </ul>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
               <a href="javascript:;" class="nav-link text-body p-0" id="iconNavbarSidenav">
@@ -120,7 +129,8 @@ if (!isset($_SESSION['username'])) {
               </a>
             </li>
             <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <i class="fa fa-bell cursor-pointer"></i>
               </a>
               <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
@@ -160,7 +170,7 @@ if (!isset($_SESSION['username'])) {
                       <option value="2">Humas</option>
                     </select>
                   </div>
-                  <div class="p-3">
+                  <div class="p-3 pt-0">
                     <label for="exampleInputEmail1" class="form-label text-bold">Pilih Pertemuan</label>
                     <select class="p-3 pt-3 form-select" aria-label="Default select example" name="guru_id">
                       <option value="1">Pertemuan ke-1</option>
@@ -175,106 +185,32 @@ if (!isset($_SESSION['username'])) {
                 <div class="card-header p-0 position-relative mt-n3 mx-3 z-index-2">
                   <div class="d-flex align-items-center pt-2 p-2 pb-2 bg-gradient-info shadow-primary border-radius-lg">
                     <div class="icon icon-shape icon-lg text-center border-radius-lg">
-                      <i class="material-icons opacity-10">camera</i>
+                      <i class="material-icons opacity-10">today</i>
                     </div>
-                    <span class="text-white text-capitalize text-bold">SCAN QR CODE</span>
+                    <span class="text-white text-uppercase text-bold">presensi</span>
                   </div>
                 </div>
-                <div class="card-body my-auto px-5">
-                  <h4 class="d-inline">Pilih kamera</h4>
+                <!-- Di dalam elemen <div class="card-body my-auto px-5 align-items-center"> -->
+                <div class="card-body my-auto px-5 align-items-center">
+                  <!-- Ubah teks di bawah berdasarkan waktu -->
+                  <h4 class="d-inline text-capitalize" id="presensiStatus">Presensi ditutup</h4>
                   <br>
-                  <select id="pilihKamera" class="custom-select w-50 ml-2" aria-label="Default select example"
-                    style="height: 35px;">
-                    <option selected>Select camera devices</option>
-                  </select>
-                  <div class="card-body p-3 pb-0">
-                    <div id="kamera">
-                      <p class="text-center mt-3">Kamera muncul disini</p>
-                    </div>
+                  <!-- Tambahkan elemen untuk menampilkan jam -->
+                  <span class="d-inline text-capitalize" id="time-left"></span>
+                  <br>
+                  <!-- Tampilkan tombol presensi dengan waktu tersisa -->
+                  <div class="text-center py-5 pb-0">
+                    <button id="presensiButton" class="btn btn-primary btn-lg btn-block">
+                      <i class="fas fa-user-check"></i> Presensi
+                    </button>
                   </div>
-                  <video id="preview"></video>
-                  <!-- <script type="text/javascript">
-                    let scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-                    scanner.addListener('scan', function (content) {
-                      console.log(content);
-                    });
-                    Instascan.Camera.getCameras().then(function (cameras) {
-                      if (cameras.length > 0) {
-                        scanner.start(cameras[0]);
-                      } else {
-                        console.error('No cameras found.');
-                      }
-                    }).catch(function (e) {
-                      console.error(e);
-                    });
-                  </script> -->
-                  <!-- <div class="row">
-                    <div class="col-sm-12 mx-auto">
-                      <div class="previewParent">
-                        <div class="text-center">
-                          <h4 class="d-none w-100" id="searching"><b>Mencari...</b></h4>
-                        </div>
-                        <video id="previewKamera"></video>
-                      </div>
-                    </div>
-                  </div> -->
                   <br>
                 </div>
               </div>
             </div>
-            <!-- <div class="col-lg-3 col-xl-4">
-              <div class="card mt-5">
-                <div class="card-body">
-                  <h3 class="mt-2"><b>Penggunaan</b></h3>
-                  <ul class="pl-3">
-                    <li>Jika berhasil scan maka akan muncul data siswa/guru dibawah preview kamera</li>
-                    <li>Klik tombol <b><span class="text-success">Absen masuk</span> / <span class="text-warning">Absen
-                          pulang</span></b> untuk mengubah waktu absensi</li>
-                    <li>Untuk melihat data absensi, klik tombol <span class="text-primary"><i class="material-icons"
-                          style="font-size: 16px;">dashboard</i> Dashboard Petugas</span></li>
-                    <li>Untuk mengakses halaman petugas anda harus login terlebih dahulu</li>
-                  </ul>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
-      <!-- <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold">Creative Tim</a>
-                for a better web.
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
-                    Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                    target="_blank">License</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer> -->
     </div>
   </main>
   <div class="fixed-plugin">
@@ -318,16 +254,13 @@ if (!isset($_SESSION['username'])) {
         <hr class="horizontal dark my-sm-4">
         <a class="btn btn-outline-dark w-100" href="https://github.com/OyShan1/epres">View documentation</a>
         <div class="w-100 text-center">
-          <a class="github-button" href="https://github.com/OyShan1/epres"
-            data-icon="octicon-star" data-size="large" data-show-count="true"
-            aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
+          <a class="github-button" href="https://github.com/OyShan1/epres" data-icon="octicon-star" data-size="large"
+            data-show-count="true" aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
           <h6 class="mt-3">Thank you!</h6>
-          <a href=""
-            class="btn btn-dark mb-0 me-2" target="_blank">
+          <a href="" class="btn btn-dark mb-0 me-2" target="_blank">
             <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
           </a>
-          <a href=""
-            class="btn btn-dark mb-0 me-2" target="_blank">
+          <a href="" class="btn btn-dark mb-0 me-2" target="_blank">
             <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
           </a>
         </div>
@@ -340,253 +273,7 @@ if (!isset($_SESSION['username'])) {
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/chartjs.min.js"></script>
-  <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
 
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["M", "T", "W", "T", "F", "S", "S"],
-        datasets: [{
-          label: "Sales",
-          tension: 0.4,
-          borderWidth: 0,
-          borderRadius: 4,
-          borderSkipped: false,
-          backgroundColor: "rgba(255, 255, 255, .8)",
-          data: [50, 20, 10, 22, 50, 10, 40],
-          maxBarThickness: 6
-        },],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#fff"
-            },
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-
-
-    var ctx2 = document.getElementById("chart-line").getContext("2d");
-
-    new Chart(ctx2, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Mobile apps",
-          tension: 0,
-          borderWidth: 0,
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(255, 255, 255, .8)",
-          pointBorderColor: "transparent",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderWidth: 4,
-          backgroundColor: "transparent",
-          fill: true,
-          data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
-          maxBarThickness: 6
-
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-
-    var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
-
-    new Chart(ctx3, {
-      type: "line",
-      data: {
-        labels: ["Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        datasets: [{
-          label: "Mobile apps",
-          tension: 0,
-          borderWidth: 0,
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(255, 255, 255, .8)",
-          pointBorderColor: "transparent",
-          borderColor: "rgba(255, 255, 255, .8)",
-          borderWidth: 4,
-          backgroundColor: "transparent",
-          fill: true,
-          data: [50, 40, 300, 220, 500, 250, 400, 230, 500],
-          maxBarThickness: 6
-
-        }],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
-        },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              padding: 10,
-              color: '#f8f9fa',
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: false,
-              drawOnChartArea: false,
-              drawTicks: false,
-              borderDash: [5, 5]
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
-        },
-      },
-    });
-  </script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -596,6 +283,85 @@ if (!isset($_SESSION['username'])) {
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
+
+  <!-- Script Presensi -->
+  <script>
+    // Retrieve the values from localStorage
+    const startTime = localStorage.getItem('startTime');
+    const endTime = localStorage.getItem('endTime');
+
+    // Convert the time values to Date objects
+    const jamBukaPresensi = new Date();
+    const [startHours, startMinutes] = startTime.split(':');
+    jamBukaPresensi.setHours(startHours, startMinutes, 0, 0);
+
+    const jamTutupPresensi = new Date();
+    const [endHours, endMinutes] = endTime.split(':');
+    jamTutupPresensi.setHours(endHours, endMinutes, 0, 0);
+
+    // Fungsi untuk menampilkan pesan pop up
+    function showPopup(message) {
+      alert(message);
+    }
+
+    // Fungsi untuk menangani klik tombol presensi
+    function handlePresensi() {
+      const sekarang = new Date(); // Waktu sekarang
+      if (sekarang < jamBukaPresensi) {
+        showPopup("Presensi belum dibuka. Silakan presensi setelah dibuka");
+      } else if (sekarang > jamTutupPresensi) {
+        showPopup("Presensi telah ditutup. Silakan presensi besok.");
+      } else {
+        showPopup("Presensi berhasil!");
+      }
+    }
+
+    // Menambahkan event listener untuk tombol presensi
+    document.getElementById('presensiButton').addEventListener('click', handlePresensi);
+
+    // Ubah teks di atas tombol berdasarkan waktu
+    function updatePresensiStatus() {
+      const sekarang = new Date();
+      if (sekarang < jamBukaPresensi) {
+        document.getElementById('presensiStatus').innerText = "Presensi belum dibuka";
+      } else if (sekarang > jamTutupPresensi) {
+        document.getElementById('presensiStatus').innerText = "Presensi ditutup";
+      } else {
+        document.getElementById('presensiStatus').innerText = "Presensi telah dibuka";
+        const sisaWaktu = Math.floor((jamTutupPresensi - sekarang) / 1000); // Hitung sisa waktu dalam detik
+        const menit = Math.floor(sisaWaktu / 60);
+        const detik = sisaWaktu % 60;
+        document.getElementById('presensiButton').innerText = `Presensi Sekarang `;
+        document.getElementById('time-left').innerText = `(${menit} menit ${detik} detik tersisa)`;
+      }
+    }
+
+    // Panggil fungsi untuk mengupdate status presensi secara berkala setiap 1 detik
+    let intervalID = setInterval(updatePresensiStatus, 1000);
+
+    // Panggil fungsi pertama kali secara manual
+    updatePresensiStatus();
+  </script>
+
+  <!-- Script Waktu -->
+  <!-- Di bagian bawah sebelum tag </body> -->
+<script>
+  // Fungsi untuk menampilkan jam saat ini
+  function displayCurrentTime() {
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+    document.getElementById('current-time').innerText = `${hours}:${minutes}:${seconds}`;
+  }
+
+  // Panggil fungsi untuk menampilkan jam pertama kali
+  displayCurrentTime();
+
+  // Atur agar fungsi displayCurrentTime dipanggil setiap detik
+  setInterval(displayCurrentTime, 1000);
+</script>
+
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
