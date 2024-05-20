@@ -1,17 +1,9 @@
-<!--
-=========================================================
-* Material Dashboard 2 - v3.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+  header('Location: ../login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -61,27 +53,19 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/atur-presensi.php">
+          <a class="nav-link text-white " href="../pages/data-absensi-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">rule</i>
+              <i class="material-icons opacity-10">person</i>
             </div>
-            <span class="nav-link-text ms-1">Atur Presensi</span>
+            <span class="nav-link-text ms-1">Absensi Siswa</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/generate-laporan.html">
+          <a class="nav-link text-white " href="../pages/data-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">print</i>
+              <i class="material-icons opacity-10">person</i>
             </div>
-            <span class="nav-link-text ms-1">Generate Laporan</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">task_alt</i>
-            </div>
-            <span class="nav-link-text ms-1">Presensi</span>
+            <span class="nav-link-text ms-1">Data Siswa</span>
           </a>
         </li>
         <li class="nav-item mt-3">
@@ -96,19 +80,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="../assets/config/logout.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
+            <span class="nav-link-text ms-1"><?php echo $_SESSION['username']; ?></span>
           </a>
         </li>
       </ul>
@@ -180,200 +156,122 @@
     <!-- End Navbar -->
     <div class="container-fluid py-4">
       <div class="row">
-        <div class="mt-4 mb-5 col-12 grid-margin">
-          <div class="card">
-            <div class="p-2 pt-2">
-              <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2 bg-transparent">
-                <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1 pt-4 p-0">
-                  <div class="text-white text-capitalize">
-                    <p class="text-center fw-bold" style="font-size: 25px;">JADWAL</p>
-                  </div>
-                </div>
+        <div class="mt-3 col-auto grid-margin">
+          <div class="card-header p-0 position-relative mt-n1 mx-0 bg-transparent">
+            <div class="row">
+              <div class="col-12">
+                <a href="../dashboard.php" class="btn btn-info col-12">Kembali</a>
               </div>
-              </br>
-              <div class="mx-3 position-relative p-0">
-                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active  ">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Senin
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Humtik</span>
-                              <a href="../epres/pages/dashboard-ekstra.php" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Humas</span>
-                              <a href="" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Selasa
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Robotik</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Aeromodeling</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Rabu
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra1</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra2</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Kamis
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra1</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra2</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Jumat
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra1</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra2</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra3</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="d-flex justify-content-between align-items-center ">
-                  <div class="" style="padding-left: 15px;">
-                    <a class="btn carousel-control-prev bg-secondary mt-auto" href="#carouselExampleControls"
-                    role="button" data-bs-slide="prev" style="width: 55px; height: 30px;">
-                    <span class="carousel-control-prev-icon" style="height: 20px;" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  </div>
-                  <div class="" style="padding-right: 20px;">
-                    <a class="btn carousel-control-next bg-secondary mt-auto " href="#carouselExampleControls"
-                      role="button" data-bs-slide="next" style="width: 55px; height: 30px;">
-                      <span class="carousel-control-next-icon" style="height: 20px;" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-success shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">person</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">today present</p>
+                <h4 class="mb-0">14</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+10% </span>than last week</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-danger shadow-primary text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">person</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">today's sick</p>
+                <h4 class="mb-0">0</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">-3% </span>than last week</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-danger shadow-success text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">person</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">today's permission</p>
+                <h4 class="mb-0">2</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">-2%</span> than last week</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-3 col-sm-6">
+          <div class="card">
+            <div class="card-header p-3 pt-2">
+              <div
+                class="icon icon-lg icon-shape bg-gradient-danger shadow-info text-center border-radius-xl mt-n4 position-absolute">
+                <i class="material-icons opacity-10">person</i>
+              </div>
+              <div class="text-end pt-1">
+                <p class="text-sm mb-0 text-capitalize">Alpa</p>
+                <h4 class="mb-0">1</h4>
+              </div>
+            </div>
+            <hr class="dark horizontal my-0">
+            <div class="card-footer p-3">
+              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">+5% </span>than last week</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Chart -->
+      <div class="row mt-4">
+        <div class="col-lg-12 mt-4 mb-3">
+          <div class="card z-index-2 ">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+              <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
+                <div class="chart">
+                  <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
                 </div>
               </div>
             </div>
-
+            <div class="card-body">
+              <h6 class="mb-0 ">Tidak Hadir</h6>
+              <p class="text-sm ">Anggota yang tidak hadir pada pertemuan ke-</p>
+              <div class="d-flex align-items-center"> <i class="material-icons text me-1">checklist</i> <a
+                  class="text-sm font-weight" href="#">Lihat data</a> </div>
+              <hr class="dark horizontal">
+              <div class="d-flex ">
+                <i class="material-icons text-sm my-auto me-1">schedule</i>
+                <p class="mb-0 text-sm">just updated</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                Designed by
-                <a href="https://github.com/OyShan1/epres" class="font-weight-bold" target="_blank">Group 6</a>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">About
-                    Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer> -->
-    </div>
   </main>
   <div class="fixed-plugin">
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+      <i class="material-icons py-2">settings</i>
+    </a>
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
         <div class="float-start">
@@ -686,7 +584,7 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
-    <!-- Script Waktu -->
+  <!-- Script Waktu -->
   <!-- Di bagian bawah sebelum tag </body> -->
 <script>
   // Fungsi untuk menampilkan jam saat ini

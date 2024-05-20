@@ -1,17 +1,9 @@
-<!--
-=========================================================
-* Material Dashboard 2 - v3.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+  header('Location: ../login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,9 +11,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../assets/img/logos/logo-1.png">
   <title>
-    ePRESS
+    PRESS
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
@@ -35,6 +27,12 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+  <style>
+    .custom-border {
+      border: 2px solid #ced4da;
+      border-radius: .25rem;
+    }
+  </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -44,16 +42,16 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="../pages/dashboard.html">
-        <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">ePRESS</span>
+      <a class="navbar-brand m-0 pb-0" href="../dashboard.php">
+        <img src="../assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">PRESS</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/dashboard-ekstra1.html">
+          <a class="nav-link text-white" href="../pages/dashboard.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -61,26 +59,34 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/absensi-siswa.html">
+          <a class="nav-link text-white active bg-gradient-info" href="../pages/atur-presensi.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">person</i>
+              <i class="material-icons opacity-10">rule</i>
             </div>
-            <span class="nav-link-text ms-1">Absensi Siswa</span>
+            <span class="nav-link-text ms-1">Atur Presensi</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../pages/data-siswa.html">
+          <a class="nav-link text-white " href="../pages/generate-laporan.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">person</i>
+              <i class="material-icons opacity-10">print</i>
             </div>
-            <span class="nav-link-text ms-1">Data Siswa</span>
+            <span class="nav-link-text ms-1">Generate Laporan</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">task_alt</i>
+            </div>
+            <span class="nav-link-text ms-1">Presensi</span>
           </a>
         </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white " href="../pages/profile-admin.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -88,19 +94,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="../assets/config/logout.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
+            <span class="nav-link-text ms-1"><?php echo $_SESSION['fullname']; ?></span>
           </a>
         </li>
       </ul>
@@ -114,7 +112,7 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Data Siswa</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Atur Presensi</li>
           </ol>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -130,7 +128,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
                 <li>
-                  <a class="dropdown-item border-radius-md" href="logout.php">
+                  <a class="dropdown-item border-radius-md" href="../assets/config/logout.php">
                     <i class="fa fa-sign-out me-sm-1"></i>
                     <span>Logout</span>
                   </a>
@@ -152,7 +150,8 @@
               </a>
             </li>
             <li class="nav-item dropdown pe-2 d-flex align-items-center">
-              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <a href="javascript:;" class="nav-link text-body p-0" id="dropdownMenuButton" data-bs-toggle="dropdown"
+                aria-expanded="false">
                 <i class="fa fa-bell cursor-pointer"></i>
               </a>
               <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
@@ -171,121 +170,77 @@
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row">
-        <div class="col-12">
-          <div class="card my-4">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
-              <div class="d-flex align-items-center pt-2 p-2 pb-2 bg-gradient-info shadow-primary border-radius-lg">
-                <div class="icon icon-shape icon-lg text-center border-radius-lg">
-                  <i class="material-icons opacity-10">person</i>
-                </div>
-                <span class="text-white text-uppercase text-bold">Data siswa</span>
-              </div>
-            </div>
-            <div class="card-body px-0 pb-2">
-              <div class="table-hover table-responsive">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-left">No</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">NIS</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Nama Siswa</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Kelas/Jurusan</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Jenis Kelamin</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">1</p>
+      <div class="row justify-content-center">
+        <div class="col-lg-9">
+          <div class="row">
+            <div class="col-col-12">
+              <div class="row">
+                <div class="col-md-12 mb-lg-0 mb-4">
+                  <div class="card mt-4">
+                    <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+                      <div
+                        class="d-flex align-items-center pt-2 p-2 pb-2 bg-gradient-info shadow-primary border-radius-lg">
+                        <div class="icon icon-shape icon-lg text-center border-radius-lg">
+                          <i class="material-icons opacity-10">rule</i>
                         </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">20213</p>
-                        </div>
-                      </td>
-                      <td class="text-left ">
-                        <div class="d-flex align-items-center py-1 px-3">
-                          <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg"
-                            alt="user1">
-                          <div>
-                            <h6 class="mb-0 text-sm">Dedih</h6>
-                            <p class="text-xs text-secondary mb-0">nama@stembayo.com</p>
+                        <span class="text-white text-uppercase text-bold">Atur Presensi</span>
+                      </div>
+                    </div>
+                    </br>
+                    <div class="card-body pt-0 p-3 text-center">
+                      <li
+                        class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg justify-content-center pt-5 p-3">
+                        <div class="d-flex flex-column ">
+                          <div class="col-lg-12 col-md-12">
+                            <button class="btn btn-warning btn-lg ml-3 pl-3 py-3 px-2 d-inline" data-bs-toggle="modal"
+                              data-bs-target="#exampleModal" href="#">
+                              <i class="material-icons px-1">update</i> Buka Sekarang
+                            </button>
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                              <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Mengatur Waktu</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                  </div>
+                                  <div class="modal-body">
+                                    <div class="container-fluid">
+                                      <div class="row mb-3">
+                                        <div class="col-12">
+                                          <label for="startTime" class="form-label">Waktu Mulai</label>
+                                          <div class="input-group">
+                                            <input type="time" id="startTime" class="form-control custom-border px-3" placeholder="Masukkan Waktu">
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="row mb-3">
+                                        <div class="col-12">
+                                          <label for="endTime" class="form-label">Waktu Akhir</label>
+                                          <div class="input-group">
+                                            <input type="time" id="endTime" class="form-control custom-border px-3" placeholder="Masukkan Waktu">
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Keluar</button>
+                                    <button type="button" class="btn btn-success" id="saveButton" data-bs-dismiss="modal">SIMPAN</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">11 SIJA C</p>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">Non binary</p>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                            data-original-title="Edit user">
-                            Edit
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div id="dataSiswa">
-                  <p class="text-center mt-3">Daftar siswa muncul disini</p>
+                      </li>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-12 col-md-12">
-        <a class="btn btn-warning ml-3 pl-3 py-3" href="#">
-          <i class="material-icons mr-2">add</i> Tambah data siswa
-        </a>
-      </div>
-      <!-- <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                for a better web.
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
-                    Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                    target="_blank">License</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer> -->
     </div>
   </main>
   <div class="fixed-plugin">
@@ -295,7 +250,7 @@
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">ePRESS UI Configurator</h5>
+          <h5 class="mt-3 mb-0">UI Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="float-end mt-4">
@@ -329,16 +284,13 @@
         <hr class="horizontal dark my-sm-4">
         <a class="btn btn-outline-dark w-100" href="https://github.com/OyShan1/epres">View documentation</a>
         <div class="w-100 text-center">
-          <a class="github-button" href="https://github.com/OyShan1/epres"
-            data-icon="octicon-star" data-size="large" data-show-count="true"
-            aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
+          <a class="github-button" href="https://github.com/OyShan1/epres" data-icon="octicon-star" data-size="large"
+            data-show-count="true" aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
           <h6 class="mt-3">Thank you!</h6>
-          <a href=""
-            class="btn btn-dark mb-0 me-2" target="_blank">
+          <a href="" class="btn btn-dark mb-0 me-2" target="_blank">
             <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
           </a>
-          <a href=""
-            class="btn btn-dark mb-0 me-2" target="_blank">
+          <a href="" class="btn btn-dark mb-0 me-2" target="_blank">
             <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
           </a>
         </div>
@@ -350,16 +302,26 @@
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-    }
+    document.getElementById('saveButton').addEventListener('click', function() {
+      const startTime = document.getElementById('startTime').value;
+      const endTime = document.getElementById('endTime').value;
+      
+      // Simpan nilai-nilai di localStorage
+      localStorage.setItem('startTime', startTime);
+      localStorage.setItem('endTime', endTime);
+
+      // Tampilkan pesan menggunakan SweetAlert2
+      Swal.fire({
+        title: 'Waktu Telah di Update',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+    });
   </script>
-    <!-- Script Waktu -->
+
+  <!-- Script Waktu -->
   <!-- Di bagian bawah sebelum tag </body> -->
 <script>
   // Fungsi untuk menampilkan jam saat ini
@@ -377,6 +339,7 @@
   // Atur agar fungsi displayCurrentTime dipanggil setiap detik
   setInterval(displayCurrentTime, 1000);
 </script>
+  
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

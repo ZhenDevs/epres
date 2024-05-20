@@ -2,21 +2,43 @@
 include 'assets/config/connect.php';
 session_start();
 if (!isset($_SESSION['username'])) {
-  header("Location: login.php"); // Ganti 'login.php' dengan URL halaman login Anda
+  header("Location: login.php");
+  exit();
+}
+
+if ($_SESSION['user_tipe'] !== 'admin') {
+  header("Location: pages/dashboard-siswa.php");
   exit();
 }
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-// include 'assets/config/connect.php';
-$sql = "SELECT h.nama_hari, e.nama_ekstra
+
+// Query umum untuk mengambil data berdasarkan hari
+$query = "SELECT h.nama_hari, e.nama_ekstra
 FROM jadwal j
 JOIN hari h ON j.hari_id = h.id
 JOIN ekstra e ON j.ekstra_id = e.id
-WHERE j.hari_id = 1 AND j.ekstra_id IN (1, 2);";
+WHERE j.hari_id IN (1, 2) AND j.ekstra_id IN (1, 2, 4)";
 
 // Eksekusi query
-$result = $is_connect->query($sql);
+$result = $is_connect->query($query);
+if (!$result) {
+    die("Query failed: " . $is_connect->error);
+}
+
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        if ($row["nama_hari"] == "senin") {
+            $seninData[] = $row;
+        } elseif ($row["nama_hari"] == "selasa") {
+            $selasaData[] = $row;
+        }
+    }
+} else {
+    echo "No data found";
+}
+
 
 // Tutup koneksi
 $is_connect->close();
@@ -29,9 +51,9 @@ $is_connect->close();
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="./assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="./assets/img/logos/logo-1.png">
   <title>
-    ePRESS
+    PRESS
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
@@ -54,16 +76,16 @@ $is_connect->close();
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="../pages/dashboard.html">
-        <img src="./assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">ePRESS</span>
+      <a class="navbar-brand m-0 pb-0" href="../dashboard.php">
+        <img src="./assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">PRESS</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../pages/dashboard.html">
+          <a class="nav-link text-white active bg-gradient-info" href="../dashboard.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -71,7 +93,7 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/atur-presensi.html">
+          <a class="nav-link text-white" href="../epres/pages/atur-presensi.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">rule</i>
             </div>
@@ -87,7 +109,7 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
+          <a class="nav-link text-white " href="../epres/pages/dashboard-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">task_alt</i>
             </div>
@@ -98,7 +120,7 @@ $is_connect->close();
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white " href="../epres/pages/profile-admin.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -106,19 +128,11 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="../login.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1"><?php echo htmlspecialchars($_SESSION['name']); ?></span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
+            <span class="nav-link-text ms-1"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
           </a>
         </li>
       </ul>
@@ -143,11 +157,11 @@ $is_connect->close();
               <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
               <a href="javascript:;" class="nav-link text-body p-0" id="UserdropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-user me-sm-0"></i>
-                <span class="d-sm-inline d-none"><?php echo htmlspecialchars($_SESSION['name']); ?></span>
+                <span class="d-sm-inline d-none"></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
                 <li>
-                  <a class="dropdown-item border-radius-md" href="logout.php">
+                  <a class="dropdown-item border-radius-md" href="assets/config/logout.php">
                     <i class="fa fa-sign-out me-sm-1"></i>
                     <span>Logout</span>
                   </a>
@@ -211,55 +225,45 @@ $is_connect->close();
                         <div
                           class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
                           style="font-size: 20px;">
-                          <?php 
-                          $ekstraData = [];
-                          $displayedDays = []; // Untuk menyimpan hari yang sudah ditampilkan
-                          if ($result->num_rows > 0) {
-                              while($row = $result->fetch_assoc()) {
-                                  if (!in_array($row["nama_hari"], $displayedDays)) {
-                                      echo $row["nama_hari"] . "<br>";
-                                      $displayedDays[] = $row["nama_hari"]; // Tandai hari sebagai ditampilkan
-                                  }
-                                  $ekstraData[] = $row; // Menyimpan data ke array
-                              }
-                          }
-                          ?>
+                          Senin
                         </div>
                         <ul class="list-group list-group-flush">
-                        <?php foreach ($ekstraData as $data) { ?>
+                        <?php if (!empty($seninData)) : ?>
+                          <?php foreach ($seninData as $dataSenin) : ?>
                           <li class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
-                              <span><?php echo $data["nama_ekstra"]; ?></span>
-                              <a href="../pages/dashboard-ekstra1.html" class="btn btn-sm btn-outline-primary"">Masuk</a>
+                              <span><?php echo $dataSenin["nama_ekstra"]; ?></span>
+                              <a href="../epres/pages/dashboard-ekstra.php" class="btn btn-sm btn-outline-primary"">Masuk</a>
                             </div>
                           </li>
-                        <?php } ?>
+                          <?php endforeach; ?>
+                        <?php else : ?>
+                          <li class="list-group-item">Tidak ada data</li>
+                        <?php endif; ?>
                         </ul>
                       </div>
                     </div>
                     <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Selasa
-                        </div>
-                        <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Robotik</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Aeromodeling</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                        </ul>
+                    <div class="card bg-light shadow-sm">
+                      <div class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center" style="font-size: 20px;">
+                        Selasa
                       </div>
+                      <ul class="list-group list-group-flush">
+                        <?php if (!empty($selasaData)) : ?>
+                          <?php foreach ($selasaData as $dataSelasa) : ?>
+                            <li class="list-group-item">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span><?php echo $dataSelasa["nama_ekstra"]; ?></span>
+                                <a href="../epres/pages/dashboard-ekstra.php" class="btn btn-sm btn-outline-primary">Masuk</a>
+                              </div>
+                            </li>
+                          <?php endforeach; ?>
+                        <?php else : ?>
+                          <li class="list-group-item">Tidak ada data</li>
+                        <?php endif; ?>
+                      </ul>
                     </div>
+                  </div>
                     <div class="carousel-item">
                       <div class="card bg-light shadow-sm">
                         <div
@@ -397,7 +401,7 @@ $is_connect->close();
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">ePRESS UI Configurator</h5>
+          <h5 class="mt-3 mb-0">UI Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="float-end mt-4">
@@ -416,8 +420,8 @@ $is_connect->close();
         <div class="d-flex">
           <button class="btn bg-gradient-dark px-3 mb-2 active" data-class="bg-gradient-dark"
             onclick="sidebarType(this)">Dark</button>
-          <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent"
-            onclick="sidebarType(this)">Transparent</button>
+          <!-- <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-transparent"
+            onclick="sidebarType(this)">Transparent</button> -->
           <button class="btn bg-gradient-dark px-3 mb-2 ms-2" data-class="bg-white"
             onclick="sidebarType(this)">White</button>
         </div>
@@ -428,19 +432,8 @@ $is_connect->close();
             <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" onclick="darkMode(this)">
           </div>
         </div>
-        <hr class="horizontal dark my-sm-4">
-        <a class="btn btn-outline-dark w-100" href="https://github.com/OyShan1/epres">View documentation</a>
-        <div class="w-100 text-center">
-          <a class="github-button" href="https://github.com/OyShan1/epres" data-icon="octicon-star" data-size="large"
-            data-show-count="true" aria-label="Star creativetimofficial/material-dashboard on GitHub">Star</a>
-          <h6 class="mt-3">Thank you!</h6>
-          <a href="" class="btn btn-dark mb-0 me-2" target="_blank">
-            <i class="fab fa-twitter me-1" aria-hidden="true"></i> Tweet
-          </a>
-          <a href="" class="btn btn-dark mb-0 me-2" target="_blank">
-            <i class="fab fa-facebook-square me-1" aria-hidden="true"></i> Share
-          </a>
-        </div>
+        
+        
       </div>
     </div>
   </div>

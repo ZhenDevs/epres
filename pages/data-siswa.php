@@ -1,17 +1,24 @@
-<!--
-=========================================================
-* Material Dashboard 2 - v3.0.0
-=========================================================
+<?php
+session_start();
+include '../assets/config/connect.php';
+if (!isset($_SESSION['username'])) {
+  header('Location: ../login.php');
+}
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
+$perPage = 8; // Jumlah data per halaman
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$startAt = ($page - 1) * $perPage;
 
-=========================================================
+// Menghitung total data dan total halaman
+$totalQuery = $is_connect->query("SELECT COUNT(*) as total FROM user");
+$totalResult = $totalQuery->fetch_assoc();
+$totalRows = $totalResult['total'];
+$totalPages = ceil($totalRows / $perPage);
 
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+// Query untuk mengambil data per halaman
+$sql = "SELECT * FROM user LIMIT $startAt, $perPage";
+$result = $is_connect->query($sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,9 +26,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../assets/img/logos/logo-1.png">
   <title>
-    ePRESS
+    PRESS
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
@@ -35,6 +42,26 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+  <style>
+    /* Atur lebar kolom */
+      .table th,
+      .table td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding: 10px; /* Tambahkan padding */
+      }
+      /* Atur lebar kolom No agar tetap sejajar */
+      .table th:first-child,
+      .table td:first-child {
+        width: 50px; /* Sesuaikan dengan lebar nomor */
+      }
+    /* Atur lebar kolom lain jika diperlukan */
+    /* .table th:nth-child(2),
+       .table td:nth-child(2) {
+         width: 100px; 
+       } */
+  </style>
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -44,16 +71,16 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="../pages/dashboard.html">
-        <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">ePRESS</span>
+      <a class="navbar-brand m-0 pb-0" href="../dashboard.php">
+        <img src="../assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">PRESS</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/dashboard-ekstra1.html">
+          <a class="nav-link text-white" href="../pages/dashboard-ekstra.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -61,7 +88,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../pages/data-siswa.html">
+          <a class="nav-link text-white " href="../pages/data-absensi-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -69,7 +96,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/data-siswa.html">
+          <a class="nav-link text-white active bg-gradient-info" href="../pages/data-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -80,7 +107,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white " href="../pages/profile-admin.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -88,19 +115,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="../assets/config/logout.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
+            <span class="nav-link-text ms-1"><?php echo $_SESSION['username']; ?></span>
           </a>
         </li>
       </ul>
@@ -114,12 +133,12 @@
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Absensi Siswa</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Data Siswa</li>
           </ol>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
-            
+
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item dropdown pe-0 d-flex align-items-center">
@@ -130,7 +149,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
                 <li>
-                  <a class="dropdown-item border-radius-md" href="logout.php">
+                  <a class="dropdown-item border-radius-md" href="../assets/config/logout.php">
                     <i class="fa fa-sign-out me-sm-1"></i>
                     <span>Logout</span>
                   </a>
@@ -177,9 +196,9 @@
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="d-flex align-items-center pt-2 p-2 pb-2 bg-gradient-info shadow-primary border-radius-lg">
                 <div class="icon icon-shape icon-lg text-center border-radius-lg">
-                  <i class="material-icons opacity-10">checklist</i>
+                  <i class="material-icons opacity-10">person</i>
                 </div>
-                <span class="text-white text-uppercase text-bold">Absensi Siswa</span>
+                <span class="text-white text-uppercase text-bold">Data siswa</span>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
@@ -188,76 +207,45 @@
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-left">No</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">NIS</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-start">NIS</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Nama Siswa</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Kehadiran</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Jam Masuk</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Jam Pulang</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Keterangan</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Aksi</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Kelas/Jurusan</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Jenis Kelamin</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Role</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">1</p>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">20213</p>
-                        </div>
-                      </td>
-                      <td class="text-left ">
-                        <div class="d-flex align-items-center py-1 px-3">
-                          <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
-                          <div>
-                            <h6 class="mb-0 text-sm">Dedih</h6>
-                            <p class="text-xs text-secondary mb-0">nama@stembayo.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">--</p>
-                        </div>
-                      </td>
-                      <td class="text-center">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">--</p>
-                        </div>
-                      </td>
-                      <td class="text-center">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">--</p>
-                        </div>
-                      </td>
-                      <td class="text-center">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">--</p>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                            data-original-title="Edit user">
-                            Edit
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
-                    </tbody>
+                  <tbody class="text-uppercase text-secondary text-xxs font-weight-bolder">
+                  <?php
+                $nomor = $startAt + 1; // Inisialisasi counter untuk nomor urut
+                while ($row = $result->fetch_assoc()) {
+                  echo "<tr>";
+                  echo "<td class='text-center'>" . $nomor . "</td>";
+                  echo "<td class='text-left ps-4'>" . $row['nis'] . "</td>";
+                  echo "<td class='text-left ps-4'>" . $row['fullname'] . "</td>";
+                  echo "<td class='text-left ps-4'>" . $row['kelas'] . "</td>";
+                  echo "<td class='text-left ps-4'>" . $row['gender'] . "</td>";
+                  echo "<td class='text-left ps-4'>" . $row['user_tipe'] . "</td>";
+                  echo "</tr>";
+                  $nomor++;
+                }
+                ?>
+                  </tbody>
                 </table>
-                <div id="dataSiswa">
-                  <p class="text-center mt-3">Daftar siswa muncul disini</p>
-                </div>
               </div>
+              <nav>
+              <ul class="pagination">
+                <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                  <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                  </li>
+                <?php endfor; ?>
+              </ul>
+            </nav>
             </div>
           </div>
         </div>
       </div>
-      <!-- <footer class="footer py-4">
+      <!-- <footer class="footer py-4  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-6 mb-lg-0 mb-4">
@@ -266,21 +254,26 @@
                 <script>
                   document.write(new Date().getFullYear())
                 </script>,
-                Designed by
-                <a href="https://github.com/OyShan1/epres" class="font-weight-bold" target="_blank">Group 6</a>
+                made with <i class="fa fa-heart"></i> by
+                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
+                for a better web.
               </div>
             </div>
             <div class="col-lg-6">
               <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                 <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">Creative Tim</a>
+                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">About
+                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
                     Us</a>
                 </li>
                 <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">Blog</a>
+                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
+                </li>
+                <li class="nav-item">
+                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
+                    target="_blank">License</a>
                 </li>
               </ul>
             </div>
@@ -290,10 +283,13 @@
     </div>
   </main>
   <div class="fixed-plugin">
+    <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
+      <i class="material-icons py-2">settings</i>
+    </a>
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">ePRESS UI Configurator</h5>
+          <h5 class="mt-3 mb-0">UI Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="float-end mt-4">
@@ -357,7 +353,7 @@
       Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
     }
   </script>
-  <!-- Script Waktu -->
+    <!-- Script Waktu -->
   <!-- Di bagian bawah sebelum tag </body> -->
 <script>
   // Fungsi untuk menampilkan jam saat ini
@@ -375,7 +371,6 @@
   // Atur agar fungsi displayCurrentTime dipanggil setiap detik
   setInterval(displayCurrentTime, 1000);
 </script>
-
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->

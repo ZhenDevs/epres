@@ -4,6 +4,7 @@ if (!isset($_SESSION['username'])) {
   header("Location: ../login.php"); // Ganti 'login.php' dengan URL halaman login Anda
   exit();
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,9 +13,9 @@ if (!isset($_SESSION['username'])) {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../assets/img/logos/logo-1.png">
   <title>
-    ePRESS
+    PRESS
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
@@ -37,9 +38,9 @@ if (!isset($_SESSION['username'])) {
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="../pages/dashboard.html">
-        <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">ePRESS</span>
+      <a class="navbar-brand m-0 pb-0" href="../dashboard.php">
+        <img src="../assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">PRESS</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -57,7 +58,7 @@ if (!isset($_SESSION['username'])) {
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile-siswa.html">
+          <a class="nav-link text-white " href="../pages/profile-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -65,19 +66,11 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="../assets/config/logout.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/register.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
+            <span class="nav-link-text ms-1"><?php echo $_SESSION['username']; ?></span>
           </a>
         </li>
       </ul>
@@ -98,7 +91,6 @@ if (!isset($_SESSION['username'])) {
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
           </div>
           <ul class="navbar-nav  justify-content-end align-items-center">
-            <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
             <li class="nav-item dropdown pe-0 d-flex align-items-center">
               <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
               <a href="javascript:;" class="nav-link text-body p-0" id="UserdropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -107,7 +99,7 @@ if (!isset($_SESSION['username'])) {
               </a>
               <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
                 <li>
-                  <a class="dropdown-item border-radius-md" href="logout.php">
+                  <a class="dropdown-item border-radius-md" href="../assets/config/logout.php">
                     <i class="fa fa-sign-out me-sm-1"></i>
                     <span>Logout</span>
                   </a>
@@ -162,22 +154,13 @@ if (!isset($_SESSION['username'])) {
                     <span class="text-white text-capitalize text-bold">Pilih Ekstrakulikuler</span>
                   </div>
                 </div>
-                <form>
+                <form method="post" action="../assets/config/presensi.php">
                   <div class="p-3">
-                    <label for="exampleInputEmail1" class="form-label text-bold">Pilih Ekstra</label>
-                    <select class="p-3 pt-3 form-select" aria-label="Default select example" name="guru_id">
-                      <option value="1">Humtik</option>
-                      <option value="2">Humas</option>
-                    </select>
+                  <select class="form-select" name="id_ekstra">
+                    <option value="<?php echo $_SESSION['ekstraa']; ?>">SNB</option>
+                    <option value="SDF">SDF</option>
+                  </select>
                   </div>
-                  <div class="p-3 pt-0">
-                    <label for="exampleInputEmail1" class="form-label text-bold">Pilih Pertemuan</label>
-                    <select class="p-3 pt-3 form-select" aria-label="Default select example" name="guru_id">
-                      <option value="1">Pertemuan ke-1</option>
-                      <option value="2">Pertemuan ke-2</option>
-                    </select>
-                  </div>
-                </form>
               </div>
             </div>
             <div class="col-lg-6 col-xl-8">
@@ -199,11 +182,12 @@ if (!isset($_SESSION['username'])) {
                   <span class="d-inline text-capitalize" id="time-left"></span>
                   <br>
                   <!-- Tampilkan tombol presensi dengan waktu tersisa -->
-                  <div class="text-center py-5 pb-0">
-                    <button id="presensiButton" class="btn btn-primary btn-lg btn-block">
-                      <i class="fas fa-user-check"></i> Presensi
-                    </button>
-                  </div>
+                    <div class="text-center py-5 pb-0">
+                      <button type="submit" id="presensiButton" class="btn btn-primary btn-lg btn-block">
+                        <i class="fas fa-user-check"></i> Presensi
+                      </button>
+                    </div>
+                  </form>
                   <br>
                 </div>
               </div>
@@ -220,7 +204,7 @@ if (!isset($_SESSION['username'])) {
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">ePRESS UI Configurator</h5>
+          <h5 class="mt-3 mb-0">UI Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="float-end mt-4">
@@ -317,8 +301,13 @@ if (!isset($_SESSION['username'])) {
     }
 
     // Menambahkan event listener untuk tombol presensi
-    document.getElementById('presensiButton').addEventListener('click', handlePresensi);
-
+    document.getElementById('presensiButton').addEventListener('click', function(event) {
+  const sekarang = new Date();
+  if (sekarang < jamBukaPresensi || sekarang > jamTutupPresensi) {
+    event.preventDefault(); // Menghentikan form dari pengiriman
+    alert("Presensi tidak dalam waktu yang ditentukan.");
+  }
+});
     // Ubah teks di atas tombol berdasarkan waktu
     function updatePresensiStatus() {
       const sekarang = new Date();
@@ -345,6 +334,7 @@ if (!isset($_SESSION['username'])) {
 
   <!-- Script Waktu -->
   <!-- Di bagian bawah sebelum tag </body> -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   // Fungsi untuk menampilkan jam saat ini
   function displayCurrentTime() {
@@ -360,6 +350,27 @@ if (!isset($_SESSION['username'])) {
 
   // Atur agar fungsi displayCurrentTime dipanggil setiap detik
   setInterval(displayCurrentTime, 1000);
+
+  document.addEventListener('DOMContentLoaded', function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const status = urlParams.get('status');
+
+  if (status === 'success') {
+    Swal.fire({
+      title: 'Sukses!',
+      text: 'Presensi berhasil disimpan',
+      icon: 'success',
+      confirmButtonText: 'OK'
+    });
+  } else if (status === 'error') {
+    Swal.fire({
+      title: 'Error!',
+      text: 'Gagal menyimpan presensi',
+      icon: 'error',
+      confirmButtonText: 'OK'
+    });
+  }
+});
 </script>
 
   <!-- Github buttons -->

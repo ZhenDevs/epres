@@ -1,18 +1,9 @@
-<!--
-=========================================================
-* Material Dashboard 2 - v3.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+  header('Location: ../login.php');
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,9 +11,9 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../assets/img/logos/logo-1.png">
   <title>
-    ePRESS
+    PRESS
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
@@ -45,9 +36,9 @@
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="../pages/dashboard.html">
-        <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">ePRESS</span>
+      <a class="navbar-brand m-0 pb-0" href="../dashboard.php">
+        <img src="../assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">PRESS</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -73,19 +64,11 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="../assets/config/logout.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
+            <span class="nav-link-text ms-1"><?php echo $_SESSION['fullname']; ?></span>
           </a>
         </li>
       </ul>
@@ -115,7 +98,7 @@
               </a>
               <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
                 <li>
-                  <a class="dropdown-item border-radius-md" href="logout.php">
+                  <a class="dropdown-item border-radius-md" href="../assets/config/logout.php">
                     <i class="fa fa-sign-out me-sm-1"></i>
                     <span>Logout</span>
                   </a>
@@ -171,28 +154,11 @@
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
-                Dedih
+                <?php echo $_SESSION['fullname']; ?>
               </h5>
               <p class="mb-0 font-weight-normal text-sm">
-                Siswa
+                <?php echo $_SESSION['kelas']; ?>
               </p>
-            </div>
-          </div>
-          <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-4 mx-auto mt-3">
-            <div class="nav-wrapper position-relative end-0">
-              <div class="row">
-                <div class="col-12">
-                  <div class="list-group list-group-horizontal">
-                    <a class="btn btn-info mx-2 p-4 pl-3 py-2" href="../pages/profile-siswa.html"> <i
-                        class="material-icons mr-2">save</i> Save
-                    </a>
-                    <a class="btn btn-info mx-2 p-3 pl-3 py-2 disabled" href="#"> <i
-                        class="material-icons mr-2">password</i>
-                      Change Password
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -208,13 +174,7 @@
                     <li class="list-group-item border-0 px-0">
                       <div class="bullet ps-0">
                         <i class="material-icons text-primary">check_box</i>
-                        <label class=" text-body ms-1 text-truncate w-80 mb-0">Humtik</label>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 px-0">
-                      <div class="bullet ps-0">
-                        <i class="material-icons text-primary">check_box</i>
-                        <label class=" text-body ms-1 text-truncate w-80 mb-0">Humas</label>
+                        <label class=" text-body ms-1 text-truncate w-80 mb-0"><?php echo $_SESSION['ekstraa']; ?></label>
                       </div>
                     </li>
                     <br>
@@ -234,49 +194,25 @@
                             <div class="modal-body">
                               <div class="row mt-1 mx-3 ms-1">
                                 <div class="col-6">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Humtik
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Humas
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Aeromodeling
-                                    </label>
-                                  </div>
+                                <form action="../assets/config/edit_ekstra.php" method="POST">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" name="ekstrakurikuler[]" value="SDF" id="osisCheckbox"
+                                    <?php echo (strpos($_SESSION['ekstraa'], 'SDF') !== false ? 'checked' : ''); ?>>
+                                  <label class="form-check-label" for="osisCheckbox">
+                                    SDF
+                                  </label>
+                                  <input class="form-check-input" type="checkbox" name="ekstrakurikuler[]" value="SNB" id="osisCheckbox"
+                                    <?php echo (strpos($_SESSION['ekstraa'], 'SNB') !== false ? 'checked' : ''); ?>>
+                                  <label class="form-check-label" for="osisCheckbox">
+                                    SNB
+                                  </label>
                                 </div>
-                                <div class="col-6">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Osis
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Osis
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Osis
-                                    </label>
-                                  </div>
                                 </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">SAVE</button>
+                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">SAVE</button>
                               </div>
+                              </form>
                             </div>
                           </div>
                         </div>
@@ -297,46 +233,31 @@
                 <div class="card-body p-3">
                   <p class="text-sm">
                   <ul class="list-group">
+                  <form action="../assets/config/edit_profile.php" method="POST">
                     <li class="list-group-item border-0 ps-0 pt-0 text-sm">
                       <strong class="text-dark">Full Name:</strong> &nbsp;
                       <div class="input-group input-group-outline mb-0 mt-2">
-                        <input type="text" value="Dedih." class="form-control">
+                        <input type="text" name="fullname" id="fullname" placeholder="<?php echo $_SESSION['fullname']; ?>" class="form-control">
                       </div>
                     </li>
                     <li class="list-group-item border-0 ps-0 text-sm">
                       <strong class="text-dark">Kelas/Jurusan:</strong> &nbsp;
                       <div class="input-group input-group-outline mb-0 mt-2">
-                        <input type="text" value="11 SIJA C" class="form-control">
+                        <input type="text" name="kelas" id="kelas" placeholder="<?php echo $_SESSION['kelas']; ?>" class="form-control">
                       </div>
                     </li>
                     <li class="list-group-item border-0 ps-0 text-sm">
                       <strong class="text-dark">Email:</strong> &nbsp;
                       <div class="input-group input-group-outline mb-0 mt-2">
-                        <input type="email" value="test@gmail.com" class="form-control">
+                        <input type="email" name="email" id="email" placeholder="<?php echo $_SESSION['email']; ?>" class="form-control">
                       </div>
                     </li>
                     <li class="list-group-item border-0 ps-0 text-sm">
-                      <strong class="text-dark">Jenis Kelamin:</strong> &nbsp;
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          Male
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Female
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
-                          checked>
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Email
-                        </label>
-                      </div>
+                      <button type="submit" class="btn btn-info mx-0 p-4 pl-3 py-2">
+                        <i class="material-icons mr-2">save</i> Save
+                      </button>
                     </li>
+                  </form>
                   </ul>
                 </div>
               </div>
@@ -345,41 +266,6 @@
         </div>
       </div>
     </div>
-    <footer class="footer py-4  ">
-      <div class="container-fluid">
-        <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6 mb-lg-0 mb-4">
-            <div class="copyright text-center text-sm text-muted text-lg-start">
-              ©
-              <script>
-                document.write(new Date().getFullYear())
-              </script>,
-              made with <i class="fa fa-heart"></i> by
-              <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-              for a better web.
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
-                  Us</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-              </li>
-              <li class="nav-item">
-                <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                  target="_blank">License</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
   </div>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">
@@ -388,7 +274,7 @@
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
         <div class="float-start">
-          <h5 class="mt-3 mb-0">ePRESS UI Configurator</h5>
+          <h5 class="mt-3 mb-0">UI Configurator</h5>
           <p>See our dashboard options.</p>
         </div>
         <div class="float-end mt-4">

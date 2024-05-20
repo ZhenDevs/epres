@@ -3,6 +3,7 @@ session_start();
 if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,9 +12,9 @@ if (!isset($_SESSION['username'])) {
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="icon" type="image/png" href="../assets/img/logos/logo-1.png">
   <title>
-    ePRESS
+    PRESS
   </title>
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css"
@@ -27,18 +28,36 @@ if (!isset($_SESSION['username'])) {
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="g-sidenav-show bg-gray-200">
+<?php if (isset($_SESSION['alert'])) {
+    $alert = $_SESSION['alert'];
+    echo "<script>
+    Swal.fire({
+        title: '" . ($alert['type'] == 'success' ? 'Berhasil!' : 'Gagal!') . "',
+        text: '" . $alert['message'] . "',
+        icon: '" . $alert['type'] . "',
+        confirmButtonText: 'OK'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = 'profile-siswa.php'; // Redirect setelah klik OK
+        }
+    });
+    </script>";
+    unset($_SESSION['alert']); // Hapus session alert setelah ditampilkan
+}
+?>
   <aside
     class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
     id="sidenav-main">
     <div class="sidenav-header">
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
-      <a class="navbar-brand m-0" href="../pages/dashboard.html">
-        <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-        <span class="ms-1 font-weight-bold text-white">ePRESS</span>
+      <a class="navbar-brand m-0 pb-0" href="../dashboard.php">
+        <img src="../assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white">PRESS</span>
       </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
@@ -47,7 +66,7 @@ if (!isset($_SESSION['username'])) {
       <li class="nav-item">
           <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">task_alt</i>
+              <i class="material-icons opacity-10">dashboard</i>
             </div>
             <span class="nav-link-text ms-1">Presensi</span>
           </a>
@@ -64,19 +83,11 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-in.html">
+          <a class="nav-link text-white " href="../assets/config/logout.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1">Sign In</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/sign-up.html">
-            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-              <i class="material-icons opacity-10">assignment</i>
-            </div>
-            <span class="nav-link-text ms-1">Sign Up</span>
+            <span class="nav-link-text ms-1"><?php echo $_SESSION['username']; ?></span>
           </a>
         </li>
       </ul>
@@ -102,11 +113,11 @@ if (!isset($_SESSION['username'])) {
               <span class="d-inline text-capitalize px-3 d-none d-lg-block" id="current-time"></span>
               <a href="javascript:;" class="nav-link text-body p-0" id="UserdropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-user me-sm-0"></i>
-                <span class="d-sm-inline d-none"><?php echo htmlspecialchars($_SESSION['name']); ?></span>
+                <span class="d-sm-inline d-none"></span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
                 <li>
-                  <a class="dropdown-item border-radius-md" href="logout.php">
+                  <a class="dropdown-item border-radius-md" href="../assets/config/logout.php">
                     <i class="fa fa-sign-out me-sm-1"></i>
                     <span>Logout</span>
                   </a>
@@ -176,10 +187,10 @@ if (!isset($_SESSION['username'])) {
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
-                <?php echo $_SESSION['name']; ?>
+                <?php echo $_SESSION['fullname']; ?>
               </h5>
               <p class="mb-0 font-weight-normal text-sm">
-                <?php echo $_SESSION['kelas']; ?>
+                <?php echo $_SESSION['user_tipe']; ?>
               </p>
             </div>
           </div>
@@ -188,7 +199,7 @@ if (!isset($_SESSION['username'])) {
               <div class="row">
                 <div class="col-12">
                   <div class="list-group list-group-horizontal">
-                    <a class="btn btn-info mx-0 p-3 pl-3 py-2" href="../pages/profile-setting2.html"> <i
+                    <a class="btn btn-info mx-0 p-3 pl-3 py-2" href="../pages/profile-setting-siswa.php"> <i
                         class="material-icons mr-2">manage_accounts</i> Settings
                     </a>
                     <button type="button" class="btn btn-info mx-1 p-3 pl-3 py-2" data-bs-toggle="modal"
@@ -206,24 +217,22 @@ if (!isset($_SESSION['username'])) {
                                 aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                              <div class="row mt-1 mx-3 ms-1">
-                                <label class="mb-0"> Password Lama</label>
-                                <div class="input-group input-group-outline mb-3">
-                                  <input type="password" placeholder="" class="form-control">
+                            <form action="../assets/config/edit_password.php" method="POST">
+                                <div class="row mt-1 mx-3 ms-1">
+                                    <label class="mb-0">Password Lama</label>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <input type="password" name="old_password" class="form-control" required>
+                                    </div>
+                                    <label class="mb-0">Password Baru</label>
+                                    <div class="input-group input-group-outline mb-3">
+                                        <input type="password" name="new_password" class="form-control" required>
+                                    </div>
                                 </div>
-                                <label class="mb-0"> Password Baru</label>
-                                <div class="input-group input-group-outline mb-3">
-                                  <input type="password" placeholder="" class="form-control">
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">SAVE</button>
                                 </div>
-                                <label class="mb-0"> Confirm Password</label>
-                                <div class="input-group input-group-outline mb-3">
-                                  <input type="password" placeholder="" class="form-control">
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">SAVE</button>
-                              </div>
-                            </div>
+                            </form>
+                          </div>
                           </div>
                         </div>
                       </div>
@@ -245,13 +254,7 @@ if (!isset($_SESSION['username'])) {
                       <li class="list-group-item border-0 px-0">
                         <div class="bullet ps-0">
                           <i class="material-icons text-primary">check_box</i>
-                          <label class=" text-body ms-3 text-truncate w-80 mb-0">Humtik</label>
-                        </div>
-                      </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="bullet ps-0">
-                          <i class="material-icons text-primary">check_box</i>
-                          <label class=" text-body ms-3 text-truncate w-80 mb-0">Humas</label>
+                          <label class=" text-body ms-3 text-truncate w-80 mb-0"><?php echo $_SESSION['ekstraa']; ?></label>
                         </div>
                       </li>
                     </ul>
@@ -270,13 +273,13 @@ if (!isset($_SESSION['username'])) {
                   <div class="card-body p-3">
                     <ul class="list-group">
                       <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full
-                          Name:</strong> &nbsp; <?php echo htmlspecialchars($_SESSION['name']); ?></li>
+                          Name:</strong> &nbsp; <?php echo htmlspecialchars($_SESSION['fullname']); ?></li>
                       <li class="list-group-item border-0 ps-0 text-sm"><strong
                           class="text-dark">Kelas/Jurusan:</strong> &nbsp; <?php echo $_SESSION['kelas']; ?></li>
                       <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp;
-                        test@gmail.com</li>
+                       <?php echo $_SESSION['email']; ?></li>
                       <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Jenis
-                          Kelamin:</strong> &nbsp; Email</li>
+                          Kelamin:</strong> &nbsp; <?php echo $_SESSION['gender']; ?></li>
                     </ul>
                   </div>
                 </div>
@@ -285,6 +288,7 @@ if (!isset($_SESSION['username'])) {
           </div>
         </div>
       </div>
+      <br>
       <!-- <footer class="footer py-4  ">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
@@ -328,7 +332,7 @@ if (!isset($_SESSION['username'])) {
       <div class="card shadow-lg">
         <div class="card-header pb-0 pt-3">
           <div class="float-start">
-            <h5 class="mt-3 mb-0">ePRESS UI Configurator</h5>
+            <h5 class="mt-3 mb-0">UI Configurator</h5>
             <p>See our dashboard options.</p>
           </div>
           <div class="float-end mt-4">
