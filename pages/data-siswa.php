@@ -80,11 +80,19 @@ $result = $is_connect->query($sql);
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/dashboard-ekstra.php">
+          <a class="nav-link text-white" href="../dashboard.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/dashboard-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">legend_toggle </i>
+            </div>
+            <span class="nav-link-text ms-1">Monitoring</span>
           </a>
         </li>
         <li class="nav-item">
@@ -103,6 +111,30 @@ $result = $is_connect->query($sql);
             <span class="nav-link-text ms-1">Data Siswa</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/atur-presensi.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">rule</i>
+            </div>
+            <span class="nav-link-text ms-1">Atur Presensi</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../generate-laporan.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">print</i>
+            </div>
+            <span class="nav-link-text ms-1">Generate Laporan</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">task_alt</i>
+            </div>
+            <span class="nav-link-text ms-1">Presensi</span>
+          </a>
+        </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
@@ -115,11 +147,11 @@ $result = $is_connect->query($sql);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../assets/config/logout.php">
+          <a class="nav-link text-white " href="../login.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1"><?php echo $_SESSION['username']; ?></span>
+            <span class="nav-link-text ms-1"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
           </a>
         </li>
       </ul>
@@ -190,6 +222,24 @@ $result = $is_connect->query($sql);
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
+      <div class="row mt-3 mb-4">
+        <div class="col-auto">
+          <div class="card">
+            <div class="card-header p-2 bg-transparent">
+              <div class="d-flex align-items-center">
+                <span class="me-2">Data</span>
+                <select id="ekstrakurikuler" class="form-select form-select-sm" name="ekstrakurikuler">
+                  <option value="pramuka">Pramuka</option>
+                  <option value="paskibra">Paskibra</option>
+                  <option value="basket">Basket</option>
+                  <option value="volley">Volley</option>
+                  <option value="musik">Musik</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-12">
           <div class="card my-4">

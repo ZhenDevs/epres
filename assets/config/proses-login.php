@@ -19,6 +19,7 @@
           $_SESSION['kelas'] = $data['kelas'];
           $_SESSION['ekstraa'] = $data['ekstraa'];
           $_SESSION['gender'] = $data['gender'];
+          $_SESSION['nis'] = $data['nis'];
           $_SESSION['user_tipe'] = $data['user_tipe'];
 
           if ($data['user_tipe'] == 'admin') {

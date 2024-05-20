@@ -19,7 +19,7 @@ $query = "SELECT h.nama_hari, e.nama_ekstra
 FROM jadwal j
 JOIN hari h ON j.hari_id = h.id
 JOIN ekstra e ON j.ekstra_id = e.id
-WHERE j.hari_id IN (1, 2) AND j.ekstra_id IN (1, 2, 4)";
+WHERE j.hari_id IN (1, 2, 3, 4, 5) AND j.ekstra_id IN (1, 2, 3, 4, 5, 6, 7)";
 
 // Eksekusi query
 $result = $is_connect->query($query);
@@ -33,6 +33,12 @@ if ($result->num_rows > 0) {
             $seninData[] = $row;
         } elseif ($row["nama_hari"] == "selasa") {
             $selasaData[] = $row;
+        } elseif ($row["nama_hari"] == "rabu") {
+            $rabuData[] = $row;
+        } elseif ($row["nama_hari"] == "kamis") {
+            $kamisData[] = $row;
+        } elseif ($row["nama_hari"] == "jumat") {
+            $jumatData[] = $row;
         }
     }
 } else {
@@ -90,6 +96,30 @@ $is_connect->close();
               <i class="material-icons opacity-10">dashboard</i>
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../epres/pages/dashboard-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">legend_toggle </i>
+            </div>
+            <span class="nav-link-text ms-1">Monitoring</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/data-absensi-siswa.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <span class="nav-link-text ms-1">Absensi Siswa</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/data-siswa.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <span class="nav-link-text ms-1">Data Siswa</span>
           </a>
         </li>
         <li class="nav-item">
@@ -233,7 +263,6 @@ $is_connect->close();
                           <li class="list-group-item">
                             <div class="d-flex justify-content-between align-items-center">
                               <span><?php echo $dataSenin["nama_ekstra"]; ?></span>
-                              <a href="../epres/pages/dashboard-ekstra.php" class="btn btn-sm btn-outline-primary"">Masuk</a>
                             </div>
                           </li>
                           <?php endforeach; ?>
@@ -254,7 +283,6 @@ $is_connect->close();
                             <li class="list-group-item">
                               <div class="d-flex justify-content-between align-items-center">
                                 <span><?php echo $dataSelasa["nama_ekstra"]; ?></span>
-                                <a href="../epres/pages/dashboard-ekstra.php" class="btn btn-sm btn-outline-primary">Masuk</a>
                               </div>
                             </li>
                           <?php endforeach; ?>
@@ -272,18 +300,19 @@ $is_connect->close();
                           Rabu
                         </div>
                         <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra1</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra2</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
+                        <ul class="list-group list-group-flush">
+                        <?php if (!empty($rabuData)) : ?>
+                          <?php foreach ($rabuData as $dataRabu) : ?>
+                            <li class="list-group-item">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span><?php echo $dataRabu["nama_ekstra"]; ?></span>
+                              </div>
+                            </li>
+                          <?php endforeach; ?>
+                        <?php else : ?>
+                          <li class="list-group-item">Tidak ada data</li>
+                        <?php endif; ?>
+                      </ul>
                         </ul>
                       </div>
                     </div>
@@ -295,18 +324,19 @@ $is_connect->close();
                           Kamis
                         </div>
                         <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra1</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra2</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
+                        <ul class="list-group list-group-flush">
+                        <?php if (!empty($kamisData)) : ?>
+                          <?php foreach ($kamisData as $dataKamis) : ?>
+                            <li class="list-group-item">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span><?php echo $dataKamis["nama_ekstra"]; ?></span>
+                              </div>
+                            </li>
+                          <?php endforeach; ?>
+                        <?php else : ?>
+                          <li class="list-group-item">Tidak ada data</li>
+                        <?php endif; ?>
+                      </ul>
                         </ul>
                       </div>
                     </div>
@@ -318,24 +348,19 @@ $is_connect->close();
                           Jumat
                         </div>
                         <ul class="list-group list-group-flush">
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra1</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra2</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span class="text-black">Ekstra3</span>
-                              <a href="#" class="btn btn-sm btn-outline-primary">Masuk</a>
-                            </div>
-                          </li>
+                        <ul class="list-group list-group-flush">
+                        <?php if (!empty($jumatData)) : ?>
+                          <?php foreach ($jumatData as $dataJumat) : ?>
+                            <li class="list-group-item">
+                              <div class="d-flex justify-content-between align-items-center">
+                                <span><?php echo $dataJumat["nama_ekstra"]; ?></span>
+                              </div>
+                            </li>
+                          <?php endforeach; ?>
+                        <?php else : ?>
+                          <li class="list-group-item">Tidak ada data</li>
+                        <?php endif; ?>
+                      </ul>
                         </ul>
                       </div>
                     </div>

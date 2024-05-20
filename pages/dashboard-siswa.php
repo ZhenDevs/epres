@@ -4,7 +4,6 @@ if (!isset($_SESSION['username'])) {
   header("Location: ../login.php"); // Ganti 'login.php' dengan URL halaman login Anda
   exit();
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">

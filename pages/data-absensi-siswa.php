@@ -1,8 +1,24 @@
 <?php
+include '../assets/config/connect.php';
 session_start();
 if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
+
+$ekstra = isset($_GET['ekstra']) ? $_GET['ekstra'] : '';
+
+$sql = "SELECT user, ekstra, keterangan, waktu FROM presensi";
+if (!empty($ekstra)) {
+  $sql .= " WHERE ekstra = ?";
+}
+
+$stmt = $is_connect->prepare($sql);
+if (!empty($ekstra)) {
+  $stmt->bind_param("s", $ekstra);
+}
+$stmt->execute();
+$result = $stmt->get_result();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -45,11 +61,19 @@ if (!isset($_SESSION['username'])) {
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/dashboard-ekstra.php">
+          <a class="nav-link text-white" href="../dashboard.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
             <span class="nav-link-text ms-1">Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/dashboard-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">legend_toggle </i>
+            </div>
+            <span class="nav-link-text ms-1">Monitoring</span>
           </a>
         </li>
         <li class="nav-item">
@@ -68,6 +92,30 @@ if (!isset($_SESSION['username'])) {
             <span class="nav-link-text ms-1">Data Siswa</span>
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/atur-presensi.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">rule</i>
+            </div>
+            <span class="nav-link-text ms-1">Atur Presensi</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../generate-laporan.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">print</i>
+            </div>
+            <span class="nav-link-text ms-1">Generate Laporan</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">task_alt</i>
+            </div>
+            <span class="nav-link-text ms-1">Presensi</span>
+          </a>
+        </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
@@ -80,11 +128,11 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../assets/config/logout.php">
+          <a class="nav-link text-white " href="../login.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1"><?php echo $_SESSION['username']; ?></span>
+            <span class="nav-link-text ms-1"><?php echo htmlspecialchars($_SESSION['username']); ?></span>
           </a>
         </li>
       </ul>
@@ -155,6 +203,24 @@ if (!isset($_SESSION['username'])) {
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
+      <div class="row mt-3 mb-4">
+        <div class="col-auto">
+          <div class="card">
+            <div class="card-header p-2 bg-transparent">
+              <div class="d-flex align-items-center">
+                <span class="me-2">Data </span>
+                <select id="ekstraah" class="form-select form-select-sm" name="ekstraah">
+                  <option value="SNB">SNB</option>
+                  <option value="paskibra">Paskibra</option>
+                  <option value="basket">Basket</option>
+                  <option value="volley">Volley</option>
+                  <option value="musik">Musik</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="row">
         <div class="col-12">
           <div class="card my-4">
@@ -174,57 +240,31 @@ if (!isset($_SESSION['username'])) {
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-left">No</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">NIS</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Nama Siswa</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Kehadiran</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Jam Presensi</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Ekstrakulikuler</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Keterangan</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Aksi</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Waktu</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">1</p>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">20213</p>
-                        </div>
-                      </td>
-                      <td class="text-left ">
-                        <div class="d-flex align-items-center py-1 px-3">
-                          <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3 border-radius-lg" alt="user1">
-                          <div>
-                            <h6 class="mb-0 text-sm">Dedih</h6>
-                            <p class="text-xs text-secondary mb-0">nama@stembayo.com</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">--</p>
-                        </div>
-                      </td>
-                      <td class="text-center">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">--</p>
-                        </div>
-                      </td>
-                      <td class="text-center">
-                        <div class="d-flex px-3 py-1">
-                          <p class="text font-weight mb-0">--</p>
-                        </div>
-                      </td>
-                      <td class="text-left">
-                        <div class="d-flex px-3 py-1">
-                          <a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip"
-                            data-original-title="Edit user">
-                            Edit
-                          </a>
-                        </div>
-                      </td>
-                    </tr>
+                  <?php
+                  $no = 1;
+                    if ($result->num_rows > 0) {
+                        // output data setiap baris
+                        while($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td>" . $no++ . "</td>";
+                            echo "<td>" . htmlspecialchars($_SESSION["nis"]) . "</td>";
+                            echo "<td>" . $row["user"] . "</td>";
+                            echo "<td>" . $row["ekstra"] . "</td>";
+                            echo "<td>" . $row["keterangan"] . "</td>";
+                            echo "<td>" . $row["waktu"] . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='5'>0 results</td></tr>";
+                    }
+                    $is_connect->close();
+                    ?>
                     </tbody>
                 </table>
                 <div id="dataSiswa">
@@ -326,6 +366,24 @@ if (!isset($_SESSION['username'])) {
   <script src="../assets/js/core/bootstrap.min.js"></script>
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('ekstraah').addEventListener('change', function() {
+        var ekstra = this.value;
+        console.log("Selected ekstra:", ekstra); // Ini akan menampilkan di konsol browser
+
+        // Mengubah URL tanpa reload
+        history.pushState({ekstra: ekstra}, '', `data-absensi-siswa.php?ekstra=${ekstra}`);
+
+        fetch(`data-absensi-siswa.php?ekstra=${ekstra}`)
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('table-body').innerHTML = html;
+            })
+            .catch(error => console.error('Error loading the data:', error));
+    });
+});
+    </script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {
