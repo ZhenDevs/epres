@@ -101,7 +101,7 @@ $result = $stmt->get_result();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../generate-laporan.html">
+          <a class="nav-link text-white " href="../pages/generate-laporan.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">print</i>
             </div>
@@ -203,38 +203,20 @@ $result = $stmt->get_result();
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row mt-3 mb-4">
-        <div class="col-auto">
-          <div class="card">
-            <div class="card-header p-2 bg-transparent">
-              <div class="d-flex align-items-center">
-                <span class="me-2">Data </span>
-                <select id="ekstraah" class="form-select form-select-sm" name="ekstraah">
-                  <option value="SNB">SNB</option>
-                  <option value="paskibra">Paskibra</option>
-                  <option value="basket">Basket</option>
-                  <option value="volley">Volley</option>
-                  <option value="musik">Musik</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="row">
-        <div class="col-12">
+        <div class="col-lg-9">
           <div class="card my-4">
             <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
               <div class="d-flex align-items-center pt-2 p-2 pb-2 bg-gradient-info shadow-primary border-radius-lg">
-                <div class="icon icon-shape icon-lg text-center border-radius-lg">
+                <div class="icon icon-shape icon-lg text-center border-radius-lg me-2">
                   <i class="material-icons opacity-10">checklist</i>
                 </div>
-                <span class="text-white text-uppercase text-bold">Absensi Siswa</span>
+                <span class="text-white text-uppercase fw-bold">Absensi Siswa</span>
               </div>
             </div>
             <div class="card-body px-0 pb-2">
-              <div class="table-hover table-responsive">
-                <table class="table">
+              <div class="table-responsive">
+                <table class="table table-hover">
                   <thead>
                     <tr>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder text-left">No</th>
@@ -245,36 +227,61 @@ $result = $stmt->get_result();
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Waktu</th>
                     </tr>
                   </thead>
-                  <tbody>
-                  <?php
-                  $no = 1;
-                    if ($result->num_rows > 0) {
-                        // output data setiap baris
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $no++ . "</td>";
-                            echo "<td>" . htmlspecialchars($_SESSION["nis"]) . "</td>";
-                            echo "<td>" . $row["user"] . "</td>";
-                            echo "<td>" . $row["ekstra"] . "</td>";
-                            echo "<td>" . $row["keterangan"] . "</td>";
-                            echo "<td>" . $row["waktu"] . "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='5'>0 results</td></tr>";
-                    }
-                    $is_connect->close();
+                  <tbody id="table-body" class="text-uppercase text-secondary text-xxs font-weight-bolder">
+                    <?php
+                    $no = 1;
+                      if ($result->num_rows > 0) {
+                          // output data setiap baris
+                          while($row = $result->fetch_assoc()) {
+                              echo "<tr>";
+                              echo "<td class='ps-4'>" . $no++ . "</td>";
+                              echo "<td class='ps-4'>" . htmlspecialchars($_SESSION["nis"]) . "</td>";
+                              echo "<td class='ps-4'>" . $row["user"] . "</td>";
+                              echo "<td class='ps-4'>" . $row["ekstra"] . "</td>";
+                              echo "<td class='ps-4'>" . $row["keterangan"] . "</td>";
+                              echo "<td class='ps-4'>" . $row["waktu"] . "</td>";
+                              echo "</tr>";
+                          }
+                      } else {
+                          echo "<tr><td colspan='6' class='text-center'>0 results</td></tr>";
+                      }
+                      $is_connect->close();
                     ?>
-                    </tbody>
+                  </tbody>
                 </table>
-                <div id="dataSiswa">
-                  <p class="text-center mt-3">Daftar siswa muncul disini</p>
-                </div>
               </div>
             </div>
           </div>
         </div>
+      <div class="col-lg-3">
+        <div class="card my-4">
+          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+            <div class="d-flex align-items-center pt-2 px-3 pb-2 bg-gradient-info shadow-primary border-radius-lg">
+              <div class="icon icon-shape icon-lg text-center border-radius-lg me-2">
+                <i class="material-icons opacity-10">topic</i>
+              </div>
+              <span class="text-white text-uppercase fw-bold">Data</span>
+            </div>
+          </div>
+          <div class="card-body px-3 pb-3">
+            <form>
+              <div class="mb-3">
+                <label for="ekstraah" class="form-label">Pilih Ekstrakurikuler</label>
+                <select id="ekstraah" class="form-select form-select-sm" name="ekstraah">
+                  <option value="">...</option>
+                  <option value="">Keseluruhan</option>
+                  <option value="SNB">SNB</option>
+                  
+                </select>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
+
+      </div>
+
+
       <!-- <footer class="footer py-4">
         <div class="container-fluid">
           <div class="row align-items-center justify-content-lg-between">
@@ -370,17 +377,17 @@ $result = $stmt->get_result();
     document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('ekstraah').addEventListener('change', function() {
         var ekstra = this.value;
-        console.log("Selected ekstra:", ekstra); // Ini akan menampilkan di konsol browser
+        console.log("Selected ekstra:", ekstra);
 
-        // Mengubah URL tanpa reload
-        history.pushState({ekstra: ekstra}, '', `data-absensi-siswa.php?ekstra=${ekstra}`);
+        // Mengubah URL dengan parameter ekstra yang dipilih atau menghapus parameter jika ekstra adalah ''
+        if (ekstra === '') {
+            history.pushState({}, '', 'data-absensi-siswa.php');
+        } else {
+            history.pushState({ekstra: ekstra}, '', `data-absensi-siswa.php?ekstra=${ekstra}`);
+        }
 
-        fetch(`data-absensi-siswa.php?ekstra=${ekstra}`)
-            .then(response => response.text())
-            .then(html => {
-                document.getElementById('table-body').innerHTML = html;
-            })
-            .catch(error => console.error('Error loading the data:', error));
+        // Reload halaman setiap kali opsi dipilih
+        window.location.reload();
     });
 });
     </script>

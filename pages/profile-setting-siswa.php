@@ -157,7 +157,7 @@ if (!isset($_SESSION['username'])) {
                 <?php echo $_SESSION['fullname']; ?>
               </h5>
               <p class="mb-0 font-weight-normal text-sm">
-                <?php echo $_SESSION['kelas']; ?>
+                <?php echo $_SESSION['email']; ?>
               </p>
             </div>
           </div>
@@ -196,12 +196,12 @@ if (!isset($_SESSION['username'])) {
                                 <div class="col-6">
                                 <form action="../assets/config/edit_ekstra.php" method="POST">
                                 <div class="form-check">
-                                  <input class="form-check-input" type="checkbox" name="ekstrakurikuler[]" value="SDF" id="osisCheckbox"
+                                  <input class="form-check-input" type="radio" name="ekstrakurikuler[]" value="SDF" id="osisCheckbox"
                                     <?php echo (strpos($_SESSION['ekstraa'], 'SDF') !== false ? 'checked' : ''); ?>>
                                   <label class="form-check-label" for="osisCheckbox">
                                     SDF
                                   </label>
-                                  <input class="form-check-input" type="checkbox" name="ekstrakurikuler[]" value="SNB" id="osisCheckbox"
+                                  <input class="form-check-input" type="radio" name="ekstrakurikuler[]" value="SNB" id="osisCheckbox"
                                     <?php echo (strpos($_SESSION['ekstraa'], 'SNB') !== false ? 'checked' : ''); ?>>
                                   <label class="form-check-label" for="osisCheckbox">
                                     SNB

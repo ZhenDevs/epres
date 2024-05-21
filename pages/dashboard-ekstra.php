@@ -1,8 +1,40 @@
 <?php
 session_start();
+include '../assets/config/connect.php';
 if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
+
+$query = "SELECT COUNT(*) AS fullname FROM user";
+$query2 = "SELECT COUNT(*) AS nama_ekstra FROM ekstra";
+$result = mysqli_query($is_connect, $query);
+$result2 = mysqli_query($is_connect, $query2);
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $row2 = mysqli_fetch_assoc($result2);
+}
+
+// Query untuk menghitung jumlah orang di SNB
+$querySNB = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'SNB'";
+$resultSNB = mysqli_query($is_connect, $querySNB);
+$rowSNB = mysqli_fetch_assoc($resultSNB);
+
+// Query untuk menghitung jumlah orang di SDF
+$querySDF = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'SDF'";
+$resultSDF = mysqli_query($is_connect, $querySDF);
+$rowSDF = mysqli_fetch_assoc($resultSDF);
+
+// Query untuk menghitung jumlah orang di KIR
+$queryKIR = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'KIR'";
+$resultKIR = mysqli_query($is_connect, $queryKIR);
+$rowKIR = mysqli_fetch_assoc($resultKIR);
+
+// Query untuk menghitung jumlah orang di JURNAL
+$queryJURNAL = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'JURNAL'";
+$resultJURNAL = mysqli_query($is_connect, $queryJURNAL);
+$rowJURNAL = mysqli_fetch_assoc($resultJURNAL);
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +85,7 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../epres/pages/dashboard-ekstra.php">
+          <a class="nav-link text-white active bg-gradient-info" href="../pages/dashboard-ekstra.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">legend_toggle </i>
             </div>
@@ -85,7 +117,7 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/generate-laporan.html">
+          <a class="nav-link text-white " href="../pages/generate-laporan.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">print</i>
             </div>
@@ -130,7 +162,7 @@ if (!isset($_SESSION['username'])) {
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Monitoring</li>
           </ol>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -187,126 +219,74 @@ if (!isset($_SESSION['username'])) {
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row mt-3">
-        <div class="col-auto">
-          <div class="card">
-            <div class="card-header p-2 bg-transparent">
-              <div class="d-flex align-items-center">
-                <span class="me-2">Monitoring </span>
-                <select id="ekstrakurikuler" class="form-select form-select-sm" name="ekstrakurikuler">
-                  <option value="pramuka">Pramuka</option>
-                  <option value="paskibra">Paskibra</option>
-                  <option value="basket">Basket</option>
-                  <option value="volley">Volley</option>
-                  <option value="musik">Musik</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <br>
       <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div
-                class="icon icon-lg icon-shape bg-gradient-success shadow-dark text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">person</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">today present</p>
-                <h4 class="mb-0">14</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+10% </span>than last week</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div
-                class="icon icon-lg icon-shape bg-gradient-danger shadow-primary text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">person</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">today's sick</p>
-                <h4 class="mb-0">0</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">-3% </span>than last week</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div
-                class="icon icon-lg icon-shape bg-gradient-danger shadow-success text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">person</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">today's permission</p>
-                <h4 class="mb-0">2</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-success text-sm font-weight-bolder">-2%</span> than last week</p>
-            </div>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6">
-          <div class="card">
-            <div class="card-header p-3 pt-2">
-              <div
-                class="icon icon-lg icon-shape bg-gradient-danger shadow-info text-center border-radius-xl mt-n4 position-absolute">
-                <i class="material-icons opacity-10">person</i>
-              </div>
-              <div class="text-end pt-1">
-                <p class="text-sm mb-0 text-capitalize">Alpa</p>
-                <h4 class="mb-0">1</h4>
-              </div>
-            </div>
-            <hr class="dark horizontal my-0">
-            <div class="card-footer p-3">
-              <p class="mb-0"><span class="text-danger text-sm font-weight-bolder">+5% </span>than last week</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Chart -->
-      <div class="row mt-4">
-        <div class="col-lg-12 mt-4 mb-3">
-          <div class="card z-index-2 ">
-            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+        <div class="col-lg-8 mt-4 mb-3">
+          <div class="card z-index-2">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-1 bg-transparent">
               <div class="bg-gradient-success shadow-success border-radius-lg py-3 pe-1">
                 <div class="chart">
-                  <canvas id="chart-bars" class="chart-canvas" height="170"></canvas>
+                  <canvas id="chart-bar" class="chart-canvas" height="170"></canvas>
                 </div>
               </div>
             </div>
             <div class="card-body">
-              <h6 class="mb-0 ">Tidak Hadir</h6>
-              <p class="text-sm ">Anggota yang tidak hadir pada pertemuan ke-</p>
-              <div class="d-flex align-items-center"> <i class="material-icons text me-1">checklist</i> <a
-                  class="text-sm font-weight" href="#">Lihat data</a> </div>
+              <h6 class="mb-0">Grafik Ekstrakurikuler</h6>
+              <p class="text-sm">Data Siswa Tiap Ekstrakurikuler</p>
+              <div class="d-flex align-items-center">
+                <i class="material-icons text me-1">bar_chart</i>
+                <a class="text-sm font-weight" href="../pages/data-absensi-siswa.php">Lihat laporan lengkap</a>
+              </div>
               <hr class="dark horizontal">
-              <div class="d-flex ">
+              <div class="d-flex">
                 <i class="material-icons text-sm my-auto me-1">schedule</i>
                 <p class="mb-0 text-sm">just updated</p>
               </div>
             </div>
           </div>
         </div>
+        <div class="col-lg-4">
+          <div class="row">
+            <div class="col-xl-12 col-sm-6 mb-4 pt-4">
+              <div class="card">
+                <div class="card-header p-3 pt-2">
+                  <div
+                    class="icon icon-lg icon-shape bg-gradient-info shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                    <i class="material-icons opacity-10">person</i>
+                  </div>
+                  <div class="text-end pt-1">
+                    <p class="text-sm mb-0 text-capitalize">Total Siswa</p>
+                    <h4 class="mb-0 pt-2"><?php echo $row['fullname'];?></h4>
+                  </div>
+                </div>
+                <hr class="dark horizontal my-0">
+                <div class="card-footer p-3">
+                  <p class="mb-0">Data Perhari ini : <span class="text-success"><?php echo date('Y-m-d');?></span></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-12 col-sm-6 mb-4 pt-4">
+              <div class="card">
+                <div class="card-header p-3 pt-2">
+                  <div
+                      class="icon icon-lg icon-shape bg-gradient-info shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                      <i class="material-icons opacity-10">directions_walk</i>
+                    </div>
+                    <div class="text-end pt-1">
+                      <p class="text-sm mb-0 text-capitalize">Total Ekstra</p>
+                      <h4 class="mb-0 pt-2"><?php echo $row2['nama_ekstra'];?></h4>
+                    </div>
+                  </div>
+                  <hr class="dark horizontal my-0">
+                  <div class="card-footer p-3">
+                    <p class="mb-0">Data Perhari ini : <span class="text-success"><?php echo date('Y-m-d');?></span></p>
+                  </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   </main>
   <div class="fixed-plugin">
@@ -370,20 +350,20 @@ if (!isset($_SESSION['username'])) {
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/chartjs.min.js"></script>
   <script>
-    var ctx = document.getElementById("chart-bars").getContext("2d");
+    var ctx = document.getElementById("chart-bar").getContext("2d");
 
     new Chart(ctx, {
       type: "bar",
       data: {
-        labels: ["M", "T", "W", "T", "F", "S", "S"],
+        labels: ["SNB", "SDF", "KIR", "JURNAL"],
         datasets: [{
-          label: "Sales",
+          label: "Siswa",
           tension: 0.4,
           borderWidth: 0,
           borderRadius: 4,
           borderSkipped: false,
           backgroundColor: "rgba(255, 255, 255, .8)",
-          data: [50, 20, 10, 22, 50, 10, 40],
+          data: [<?php echo $rowSNB['ekstraa'];?>, <?php echo $rowSDF['ekstraa'];?>, <?php echo $rowKIR['ekstraa'];?>, <?php echo $rowJURNAL['ekstraa'];?>],
           maxBarThickness: 6
         },],
       },

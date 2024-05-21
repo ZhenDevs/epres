@@ -1,9 +1,24 @@
 <?php
 session_start();
+include '../assets/config/connect.php';
+
 if (!isset($_SESSION['username'])) {
   header("Location: ../login.php"); // Ganti 'login.php' dengan URL halaman login Anda
   exit();
 }
+
+$query = "SELECT start_time, end_time FROM presensi_settings ORDER BY id DESC LIMIT 1";
+$result = $is_connect->query($query);
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $startTime = $row['start_time'];
+    $endTime = $row['end_time'];
+} else {
+    // Jika tidak ada waktu yang diset, gunakan nilai default
+    $startTime = '00:00';
+    $endTime = '00:00';
+}
+$is_connect->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -156,8 +171,7 @@ if (!isset($_SESSION['username'])) {
                 <form method="post" action="../assets/config/presensi.php">
                   <div class="p-3">
                   <select class="form-select" name="id_ekstra">
-                    <option value="<?php echo $_SESSION['ekstraa']; ?>">SNB</option>
-                    <option value="SDF">SDF</option>
+                    <option value="<?php echo $_SESSION['ekstraa']; ?>"><?php echo $_SESSION['ekstraa']; ?></option>
                   </select>
                   </div>
               </div>
@@ -269,71 +283,59 @@ if (!isset($_SESSION['username'])) {
 
   <!-- Script Presensi -->
   <script>
-    // Retrieve the values from localStorage
-    const startTime = localStorage.getItem('startTime');
-    const endTime = localStorage.getItem('endTime');
+document.addEventListener('DOMContentLoaded', function() {
+  const startTime = '<?php echo $startTime; ?>';
+  const endTime = '<?php echo $endTime; ?>';
+  const jamBukaPresensi = new Date();
+  const [startHours, startMinutes] = startTime.split(':');
+  jamBukaPresensi.setHours(startHours, startMinutes, 0, 0);
 
-    // Convert the time values to Date objects
-    const jamBukaPresensi = new Date();
-    const [startHours, startMinutes] = startTime.split(':');
-    jamBukaPresensi.setHours(startHours, startMinutes, 0, 0);
+  const jamTutupPresensi = new Date();
+  const [endHours, endMinutes] = endTime.split(':');
+  jamTutupPresensi.setHours(endHours, endMinutes, 0, 0);
 
-    const jamTutupPresensi = new Date();
-    const [endHours, endMinutes] = endTime.split(':');
-    jamTutupPresensi.setHours(endHours, endMinutes, 0, 0);
-
-    // Fungsi untuk menampilkan pesan pop up
-    function showPopup(message) {
-      alert(message);
+  function updatePresensiStatus() {
+    const sekarang = new Date();
+    if (sekarang < jamBukaPresensi) {
+      document.getElementById('presensiStatus').innerText = "Presensi belum dibuka";
+      document.getElementById('presensiButton').disabled = true;
+    } else if (sekarang > jamTutupPresensi) {
+      document.getElementById('presensiStatus').innerText = "Presensi ditutup";
+      document.getElementById('presensiButton').disabled = true;
+    } else {
+      document.getElementById('presensiStatus').innerText = "Presensi telah dibuka";
+      document.getElementById('presensiButton').disabled = false;
+      const sisaWaktu = Math.floor((jamTutupPresensi - sekarang) / 1000);
+      const menit = Math.floor(sisaWaktu / 60);
+      const detik = sisaWaktu % 60;
+      document.getElementById('time-left').innerText = `(${menit} menit ${detik} detik tersisa)`;
     }
-
-    // Fungsi untuk menangani klik tombol presensi
-    function handlePresensi() {
-      const sekarang = new Date(); // Waktu sekarang
-      if (sekarang < jamBukaPresensi) {
-        showPopup("Presensi belum dibuka. Silakan presensi setelah dibuka");
-      } else if (sekarang > jamTutupPresensi) {
-        showPopup("Presensi telah ditutup. Silakan presensi besok.");
-      } else {
-        showPopup("Presensi berhasil!");
-      }
-    }
-
-    // Menambahkan event listener untuk tombol presensi
-    document.getElementById('presensiButton').addEventListener('click', function(event) {
-  const sekarang = new Date();
-  if (sekarang < jamBukaPresensi || sekarang > jamTutupPresensi) {
-    event.preventDefault(); // Menghentikan form dari pengiriman
-    alert("Presensi tidak dalam waktu yang ditentukan.");
   }
-});
-    // Ubah teks di atas tombol berdasarkan waktu
-    function updatePresensiStatus() {
-      const sekarang = new Date();
-      if (sekarang < jamBukaPresensi) {
-        document.getElementById('presensiStatus').innerText = "Presensi belum dibuka";
-      } else if (sekarang > jamTutupPresensi) {
-        document.getElementById('presensiStatus').innerText = "Presensi ditutup";
-      } else {
-        document.getElementById('presensiStatus').innerText = "Presensi telah dibuka";
-        const sisaWaktu = Math.floor((jamTutupPresensi - sekarang) / 1000); // Hitung sisa waktu dalam detik
-        const menit = Math.floor(sisaWaktu / 60);
-        const detik = sisaWaktu % 60;
-        document.getElementById('presensiButton').innerText = `Presensi Sekarang `;
-        document.getElementById('time-left').innerText = `(${menit} menit ${detik} detik tersisa)`;
-      }
+
+  setInterval(updatePresensiStatus, 1000);
+  updatePresensiStatus();
+
+  // Menangani klik tombol presensi
+  document.getElementById('presensiButton').addEventListener('click', function(event) {
+    const hasPresenced = localStorage.getItem('hasPresenced');
+    if (hasPresenced === 'true') {
+      event.preventDefault(); // Menghentikan form dari pengiriman
+      Swal.fire({
+        title: 'Peringatan!',
+        text: 'Anda sudah melakukan presensi.',
+        icon: 'warning',
+        confirmButtonText: 'OK'
+      });
+    } else {
+      localStorage.setItem('hasPresenced', 'true'); // Simpan status presensi
     }
+  });
+});
+</script>
 
-    // Panggil fungsi untuk mengupdate status presensi secara berkala setiap 1 detik
-    let intervalID = setInterval(updatePresensiStatus, 1000);
-
-    // Panggil fungsi pertama kali secara manual
-    updatePresensiStatus();
-  </script>
-
-  <!-- Script Waktu -->
-  <!-- Di bagian bawah sebelum tag </body> -->
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Script Waktu -->
+<!-- Di bagian bawah sebelum tag </body> -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   // Fungsi untuk menampilkan jam saat ini
   function displayCurrentTime() {
@@ -351,26 +353,27 @@ if (!isset($_SESSION['username'])) {
   setInterval(displayCurrentTime, 1000);
 
   document.addEventListener('DOMContentLoaded', function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const status = urlParams.get('status');
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get('status');
 
-  if (status === 'success') {
-    Swal.fire({
-      title: 'Sukses!',
-      text: 'Presensi berhasil disimpan',
-      icon: 'success',
-      confirmButtonText: 'OK'
-    });
-  } else if (status === 'error') {
-    Swal.fire({
-      title: 'Error!',
-      text: 'Gagal menyimpan presensi',
-      icon: 'error',
-      confirmButtonText: 'OK'
-    });
-  }
-});
+    if (status === 'success') {
+      Swal.fire({
+        title: 'Sukses!',
+        text: 'Presensi berhasil disimpan',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      });
+    } else if (status === 'error') {
+      Swal.fire({
+        title: 'Error!',
+        text: 'Gagal menyimpan presensi',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
+    }
+  });
 </script>
+
 
   <!-- Github buttons -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>

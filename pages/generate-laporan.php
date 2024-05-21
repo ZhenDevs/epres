@@ -1,17 +1,14 @@
-<!--
-=========================================================
-* Material Dashboard 2 - v3.0.0
-=========================================================
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+  header('Location: ../login.php');
+}
 
-* Product Page: https://www.creative-tim.com/product/material-dashboard
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://www.creative-tim.com/license)
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
--->
+if ($_SESSION['user_tipe'] !== 'admin') {
+  header("Location: pages/dashboard-siswa.php");
+  exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,7 +66,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../data-absensi-siswa.php">
+          <a class="nav-link text-white " href="../pages/data-absensi-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -215,21 +212,15 @@
                         <div class="col-md-12 p-3">
                           <div class="card">
                             <h4 class="text-primary p-3"><b>Laporan Absen Siswa</b></h4>
-                            <form>
+                            <form method="POST" action="../assets/config/generate_csv.php">
                               <div class="p-3">
-                                <label for="exampleInputEmail1" class="form-label text-bold">Pilih Ekstra</label>
-                                <select class="p-3 pt-3 form-select" aria-label="Default select example" name="guru_id">
-                                  <option value="1">Humtik</option>
-                                  <option value="2">Humas</option>
+                                <label for="ekstra" class="form-label text-bold">Pilih Ekstra</label>
+                                <select class="form-select" id="ekstra" name="ekstra">
+                                  <option value="SNB">SNB</option>
+                                  <option value="Humas">Humas</option>
                                 </select>
                               </div>
-                              <div class="p-3">
-                                <label for="exampleInputEmail1" class="form-label text-bold">Pilih Pertemuan</label>
-                                <select class="p-3 pt-3 form-select" aria-label="Default select example" name="guru_id">
-                                  <option value="1">Pertemuan ke-1</option>
-                                  <option value="2">Pertemuan ke-2</option>
-                                </select>
-                              </div>
+                              <button type="submit" class="btn btn-primary">Generate CSV</button>
                             </form>
                             <br>
                             <div class="mt-auto d-flex flex-column p-3">

@@ -32,7 +32,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['email'] = $email;
 
     // Redirect kembali ke halaman profil
-    header('Location: ../../pages/profile-siswa.php');
+    if ($_SESSION['user_tipe'] == 'admin') {
+        header('Location: ../../pages/profile-admin.php');
+    } else {
+        header('Location: ../../pages/profile-siswa.php');
+    }
     exit;
 }
 ?>

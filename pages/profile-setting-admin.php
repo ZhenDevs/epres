@@ -85,7 +85,7 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../pages/generate-laporan.html">
+          <a class="nav-link text-white" href="../pages/generate-laporan.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">print</i>
             </div>
@@ -104,7 +104,7 @@ if (!isset($_SESSION['username'])) {
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile-admin.php">
+          <a class="nav-link text-white active bg-gradient-info" href="../pages/profile-admin.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -202,28 +202,11 @@ if (!isset($_SESSION['username'])) {
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
-                Dedih
+                <?php echo $_SESSION['fullname']; ?>
               </h5>
               <p class="mb-0 font-weight-normal text-sm">
-                Siswa
+                <?php echo $_SESSION['user_tipe']; ?>
               </p>
-            </div>
-          </div>
-          <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-4 mx-auto mt-3">
-            <div class="nav-wrapper position-relative end-0">
-              <div class="row">
-                <div class="col-12">
-                  <div class="list-group list-group-horizontal">
-                    <a class="btn btn-info mx-2 p-4 pl-3 py-2" href="../pages/profile-admin.php"> <i
-                        class="material-icons mr-2">save</i> Save
-                    </a>
-                    <a class="btn btn-info mx-2 p-3 pl-3 py-2 disabled" href="#"> <i
-                        class="material-icons mr-2">password</i>
-                      Change Password
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -239,13 +222,7 @@ if (!isset($_SESSION['username'])) {
                     <li class="list-group-item border-0 px-0">
                       <div class="bullet ps-0">
                         <i class="material-icons text-primary">check_box</i>
-                        <label class=" text-body ms-1 text-truncate w-80 mb-0">Humtik</label>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 px-0">
-                      <div class="bullet ps-0">
-                        <i class="material-icons text-primary">check_box</i>
-                        <label class=" text-body ms-1 text-truncate w-80 mb-0">Humas</label>
+                        <label class=" text-body ms-1 text-truncate w-80 mb-0"><?php echo $_SESSION['ekstraa']; ?></label>
                       </div>
                     </li>
                     <br>
@@ -265,54 +242,29 @@ if (!isset($_SESSION['username'])) {
                             <div class="modal-body">
                               <div class="row mt-1 mx-3 ms-1">
                                 <div class="col-6">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Humtik
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1" checked>
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Humas
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Aeromodeling
-                                    </label>
-                                  </div>
+                                <form action="../assets/config/edit_ekstra.php" method="POST">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="radio" name="ekstrakurikuler[]" value="SDF" id="osisCheckbox"
+                                    <?php echo (strpos($_SESSION['ekstraa'], 'SDF') !== false ? 'checked' : ''); ?>>
+                                  <label class="form-check-label" for="osisCheckbox">
+                                    SDF
+                                  </label>
+                                  <input class="form-check-input" type="radio" name="ekstrakurikuler[]" value="SNB" id="osisCheckbox"
+                                    <?php echo (strpos($_SESSION['ekstraa'], 'SNB') !== false ? 'checked' : ''); ?>>
+                                  <label class="form-check-label" for="osisCheckbox">
+                                    SNB
+                                  </label>
                                 </div>
-                                <div class="col-6">
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Osis
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Osis
-                                    </label>
-                                  </div>
-                                  <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                      Osis
-                                    </label>
-                                  </div>
                                 </div>
                               </div>
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal">SAVE</button>
+                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">SAVE</button>
                               </div>
+                              </form>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
                   </ul>
                 </div>
               </div>
@@ -329,39 +281,31 @@ if (!isset($_SESSION['username'])) {
                 <div class="card-body p-3">
                   <p class="text-sm">
                   <ul class="list-group">
+                  <form action="../assets/config/edit_profile.php" method="POST">
                     <li class="list-group-item border-0 ps-0 pt-0 text-sm">
                       <strong class="text-dark">Full Name:</strong> &nbsp;
                       <div class="input-group input-group-outline mb-0 mt-2">
-                        <input type="text" value="Dedih." class="form-control">
+                        <input type="text" name="fullname" id="fullname" placeholder="<?php echo $_SESSION['fullname']; ?>" class="form-control">
                       </div>
                     </li>
                     <li class="list-group-item border-0 ps-0 text-sm">
                       <strong class="text-dark">Kelas/Jurusan:</strong> &nbsp;
                       <div class="input-group input-group-outline mb-0 mt-2">
-                        <input type="text" value="11 SIJA C" class="form-control">
+                        <input type="text" name="kelas" id="kelas" placeholder="<?php echo $_SESSION['kelas']; ?>" class="form-control">
                       </div>
                     </li>
                     <li class="list-group-item border-0 ps-0 text-sm">
                       <strong class="text-dark">Email:</strong> &nbsp;
                       <div class="input-group input-group-outline mb-0 mt-2">
-                        <input type="email" value="test@gmail.com" class="form-control">
+                        <input type="email" name="email" id="email" placeholder="<?php echo $_SESSION['email']; ?>" class="form-control">
                       </div>
                     </li>
                     <li class="list-group-item border-0 ps-0 text-sm">
-                      <strong class="text-dark">Jenis Kelamin:</strong> &nbsp;
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" checked>
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          Male
-                        </label>
-                      </div>
-                      <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2">
-                        <label class="form-check-label" for="flexRadioDefault2">
-                          Female
-                        </label>
-                      </div>
+                      <button type="submit" class="btn btn-info mx-0 p-4 pl-3 py-2">
+                        <i class="material-icons mr-2">save</i> Save
+                      </button>
                     </li>
+                  </form>
                   </ul>
                 </div>
               </div>

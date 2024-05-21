@@ -81,7 +81,7 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/generate-laporan.html">
+          <a class="nav-link text-white " href="../pages/generate-laporan.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">print</i>
             </div>
@@ -210,10 +210,10 @@ if (!isset($_SESSION['username'])) {
           <div class="col-auto my-auto">
             <div class="h-100">
               <h5 class="mb-1">
-                Dedih
+                <?php echo $_SESSION['fullname']; ?>
               </h5>
               <p class="mb-0 font-weight-normal text-sm">
-                Admin
+                <?php echo $_SESSION['user_tipe']; ?>
               </p>
             </div>
           </div>
@@ -268,20 +268,14 @@ if (!isset($_SESSION['username'])) {
               <div class="col-12 col-xl-6">
                 <div class="card card-plain h-100">
                   <div class="card-header pb-0 p-3">
-                    <h6 class="mb-0">Ekstrakulikuler yang diampu</h6>
+                    <h6 class="mb-0">Ekstrakulikuler yang diikuti</h6>
                   </div>
                   <div class="card-body p-3">
                     <ul class="list-group">
                       <li class="list-group-item border-0 px-0">
                         <div class="bullet ps-0">
                           <i class="material-icons text-primary">check_box</i>
-                          <label class=" text-body ms-3 text-truncate w-80 mb-0">Humtik</label>
-                        </div>
-                      </li>
-                      <li class="list-group-item border-0 px-0">
-                        <div class="bullet ps-0">
-                          <i class="material-icons text-primary">check_box</i>
-                          <label class=" text-body ms-3 text-truncate w-80 mb-0">Humas</label>
+                          <label class=" text-body ms-3 text-truncate w-80 mb-0"><?php echo $_SESSION['ekstraa']; ?></label>
                         </div>
                       </li>
                     </ul>
@@ -300,13 +294,13 @@ if (!isset($_SESSION['username'])) {
                   <div class="card-body p-3">
                     <ul class="list-group">
                       <li class="list-group-item border-0 ps-0 pt-0 text-sm"><strong class="text-dark">Full
-                          Name:</strong> &nbsp; Dedih</li>
+                          Name:</strong> &nbsp; <?php echo htmlspecialchars($_SESSION['fullname']); ?></li>
                       <li class="list-group-item border-0 ps-0 text-sm"><strong
-                          class="text-dark">Kelas/Jurusan:</strong> &nbsp; -</li>
+                          class="text-dark">Kelas/Jurusan:</strong> &nbsp; <?php echo $_SESSION['kelas']; ?></li>
                       <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Email:</strong> &nbsp;
-                        test@gmail.com</li>
+                       <?php echo $_SESSION['email']; ?></li>
                       <li class="list-group-item border-0 ps-0 text-sm"><strong class="text-dark">Jenis
-                          Kelamin:</strong> &nbsp; Email</li>
+                          Kelamin:</strong> &nbsp; <?php echo $_SESSION['gender']; ?></li>
                     </ul>
                   </div>
                 </div>
@@ -316,17 +310,6 @@ if (!isset($_SESSION['username'])) {
         </div>
       </div>
     </div>
-    <footer class="footer py-4  ">
-      <div class="container-fluid">
-        <div class="row align-items-center justify-content-lg-between">
-          <div class="col-lg-6 mb-lg-0 mb-4">
-          </div>
-          <div class="col-lg-6">
-            
-          </div>
-        </div>
-      </div>
-    </footer>
   </div>
   <div class="fixed-plugin">
     <a class="fixed-plugin-button text-dark position-fixed px-3 py-2">

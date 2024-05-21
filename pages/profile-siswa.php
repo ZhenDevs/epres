@@ -190,7 +190,7 @@ if (!isset($_SESSION['username'])) {
                 <?php echo $_SESSION['fullname']; ?>
               </h5>
               <p class="mb-0 font-weight-normal text-sm">
-                <?php echo $_SESSION['user_tipe']; ?>
+                <?php echo $_SESSION['email']; ?>
               </p>
             </div>
           </div>

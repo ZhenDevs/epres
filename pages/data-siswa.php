@@ -5,7 +5,7 @@ if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
 
-$perPage = 8; // Jumlah data per halaman
+$perPage = 7; // Jumlah data per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $startAt = ($page - 1) * $perPage;
 
@@ -120,7 +120,7 @@ $result = $is_connect->query($sql);
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../generate-laporan.html">
+          <a class="nav-link text-white " href="../pages/generate-laporan.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">print</i>
             </div>
@@ -222,24 +222,6 @@ $result = $is_connect->query($sql);
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row mt-3 mb-4">
-        <div class="col-auto">
-          <div class="card">
-            <div class="card-header p-2 bg-transparent">
-              <div class="d-flex align-items-center">
-                <span class="me-2">Data</span>
-                <select id="ekstrakurikuler" class="form-select form-select-sm" name="ekstrakurikuler">
-                  <option value="pramuka">Pramuka</option>
-                  <option value="paskibra">Paskibra</option>
-                  <option value="basket">Basket</option>
-                  <option value="volley">Volley</option>
-                  <option value="musik">Musik</option>
-                </select>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-12">
           <div class="card my-4">
@@ -261,7 +243,7 @@ $result = $is_connect->query($sql);
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Nama Siswa</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Kelas/Jurusan</th>
                       <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Jenis Kelamin</th>
-                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Role</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Ekstrakurikuler</th>
                     </tr>
                   </thead>
                   <tbody class="text-uppercase text-secondary text-xxs font-weight-bolder">
@@ -274,7 +256,7 @@ $result = $is_connect->query($sql);
                   echo "<td class='text-left ps-4'>" . $row['fullname'] . "</td>";
                   echo "<td class='text-left ps-4'>" . $row['kelas'] . "</td>";
                   echo "<td class='text-left ps-4'>" . $row['gender'] . "</td>";
-                  echo "<td class='text-left ps-4'>" . $row['user_tipe'] . "</td>";
+                  echo "<td class='text-left ps-4'>" . $row['ekstraa'] . "</td>";
                   echo "</tr>";
                   $nomor++;
                 }
@@ -283,53 +265,37 @@ $result = $is_connect->query($sql);
                 </table>
               </div>
               <nav>
-              <ul class="pagination">
+              <ul class="pagination justify-content-center my-4">
+                <!-- <li class="page-item <?php echo $page == 1 ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="<?php echo $page == 1 ? '#' : '?page=1'; ?>">First</a>
+                </li>
+
+                <li class="page-item <?php echo $page == 1 ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="<?php echo $page == 1 ? '#' : '?page=' . ($page - 1); ?>">Previous</a>
+                </li> -->
+
+                <!-- Tombol Halaman -->
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                   <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                    <a class="page-link <?php echo $i == $page ? 'bg-primary text-white' : 'text-primary'; ?>" href="?page=<?php echo $i; ?>">
+                      <?php echo $i; ?>
+                    </a>
                   </li>
                 <?php endfor; ?>
+
+                <!-- <li class="page-item <?php echo $page == $totalPages ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="<?php echo $page == $totalPages ? '#' : '?page=' . ($page + 1); ?>">Next</a>
+                </li>
+                <li class="page-item <?php echo $page == $totalPages ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="<?php echo $page == $totalPages ? '#' : '?page=' . $totalPages; ?>">Last</a>
+                </li> -->
               </ul>
+
             </nav>
             </div>
           </div>
         </div>
       </div>
-      <!-- <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                for a better web.
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
-                    Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                    target="_blank">License</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer> -->
     </div>
   </main>
   <div class="fixed-plugin">

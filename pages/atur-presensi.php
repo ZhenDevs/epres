@@ -1,7 +1,28 @@
 <?php
+include '../assets/config/connect.php';
 session_start();
 if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
+}
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $startTime = $_POST['startTime'];
+  $endTime = $_POST['endTime'];
+
+  // Query untuk menyimpan data
+  $query = "INSERT INTO presensi_settings (start_time, end_time) VALUES (?, ?)";
+  $stmt = $is_connect->prepare($query);
+  $stmt->bind_param("ss", $startTime, $endTime);
+  $stmt->execute();
+
+  if ($stmt->affected_rows > 0) {
+      echo json_encode(array("success" => true));
+  } else {
+      echo json_encode(array("error" => "Failed to save time settings."));
+  }
+  $stmt->close();
+  $is_connect->close();
+  exit;
 }
 ?>
 <!DOCTYPE html>
@@ -59,7 +80,7 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../epres/pages/dashboard-ekstra.php">
+          <a class="nav-link text-white " href="../pages/dashboard-ekstra.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">legend_toggle </i>
             </div>
@@ -91,7 +112,7 @@ if (!isset($_SESSION['username'])) {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/generate-laporan.html">
+          <a class="nav-link text-white " href="../pages/generate-laporan.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">print</i>
             </div>
@@ -249,7 +270,7 @@ if (!isset($_SESSION['username'])) {
                                   </div>
                                   <div class="modal-footer">
                                     <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Keluar</button>
-                                    <button type="button" class="btn btn-success" id="saveButton" data-bs-dismiss="modal">SIMPAN</button>
+                                    <button type="button" class="btn btn-success" id="saveButton">SIMPAN</button>
                                   </div>
                                 </div>
                               </div>
@@ -328,22 +349,49 @@ if (!isset($_SESSION['username'])) {
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    document.getElementById('saveButton').addEventListener('click', function() {
-      const startTime = document.getElementById('startTime').value;
-      const endTime = document.getElementById('endTime').value;
-      
-      // Simpan nilai-nilai di localStorage
-      localStorage.setItem('startTime', startTime);
-      localStorage.setItem('endTime', endTime);
+document.getElementById('saveButton').addEventListener('click', function() {
+    const startTime = document.getElementById('startTime').value;
+    const endTime = document.getElementById('endTime').value;
 
-      // Tampilkan pesan menggunakan SweetAlert2
-      Swal.fire({
-        title: 'Waktu Telah di Update',
-        icon: 'success',
-        confirmButtonText: 'OK'
-      });
+    if (!startTime || !endTime) {
+        Swal.fire({
+            title: 'Error',
+            text: 'Harap masukkan waktu mulai dan waktu akhir.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
+
+    fetch('atur-presensi.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `startTime=${startTime}&endTime=${endTime}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                title: 'Waktu Telah di Update',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
+                modal.hide();
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: 'Gagal menyimpan pengaturan waktu.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+        }
     });
-  </script>
+});
+</script>
 
   <!-- Script Waktu -->
   <!-- Di bagian bawah sebelum tag </body> -->
