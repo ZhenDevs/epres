@@ -10,6 +10,8 @@ if ($_SESSION['user_tipe'] !== 'admin') {
   exit();
 }
 
+
+
 // Query untuk mendapatkan ekstra yang tersedia
 $queryEkstra = "SELECT nama_ekstra FROM ekstra";
 $ekstraResult = $is_connect->query($queryEkstra);
@@ -265,25 +267,34 @@ $result = $stmt->get_result();
                     </tr>
                   </thead>
                   <tbody id="table-body" class="text-uppercase text-secondary text-xxs font-weight-bolder">
-                    <?php
-                    $no = ($currentPage - 1) * $perPage + 1;
-                    if ($result->num_rows > 0) {
-                        // output data setiap baris
-                        while($row = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td class='ps-4'>" . $no++ . "</td>";
-                            echo "<td class='ps-4'>" . htmlspecialchars($_SESSION["nis"]) . "</td>";
-                            echo "<td class='ps-4'>" . $row["user"] . "</td>";
-                            echo "<td class='ps-4'>" . $row["ekstra"] . "</td>";
-                            echo "<td class='ps-4'>" . $row["keterangan"] . "</td>";
-                            echo "<td class='ps-4'>" . $row["waktu"] . "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='6' class='text-center'>0 results</td></tr>";
-                    }
-                    $is_connect->close();
-                    ?>
+                  <?php
+                  $no = ($currentPage - 1) * $perPage + 1;
+//  loop output data
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        //  NIS berdasarkan fullname
+        $nisQuery = "SELECT nis FROM user WHERE fullname = ?";
+        $nisStmt = $is_connect->prepare($nisQuery);
+        $nisStmt->bind_param("s", $row["user"]);
+        $nisStmt->execute();
+        $nisResult = $nisStmt->get_result();
+        $nisRow = $nisResult->fetch_assoc();
+        $nis = $nisRow['nis'];
+
+        echo "<tr>";
+        echo "<td class='ps-4'>" . $no++ . "</td>";
+        echo "<td class='ps-4'>" . htmlspecialchars($nis) . "</td>";
+        echo "<td class='ps-4'>" . $row["user"] . "</td>";
+        echo "<td class='ps-4'>" . $row["ekstra"] . "</td>";
+        echo "<td class='ps-4'>" . $row["keterangan"] . "</td>";
+        echo "<td class='ps-4'>" . $row["waktu"] . "</td>";
+        echo "</tr>";
+    }
+} else {
+    echo "<tr><td colspan='6' class='text-center'>0 results</td></tr>";
+}
+$is_connect->close();
+?>
                   </tbody>
                 </table>
               </div>
