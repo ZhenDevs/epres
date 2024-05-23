@@ -1,3 +1,11 @@
+<?php
+include 'assets/config/connect.php'; // Sesuaikan path sesuai lokasi file konfigurasi koneksi Anda
+
+// Query untuk ambil nama ekstra
+$query = "SELECT nama_ekstra FROM ekstra";
+$result = $is_connect->query($query);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -200,9 +208,13 @@
                         <label for="ekstraa" class="form-label">Ekstrakulikuler yang diikuti</label>
                         <select class="form-select px-2" id="ekstraa" name="ekstraa" required>
                           <option value="" disabled selected>Pilih Ekstrakulikuler</option>
-                          <option value="SNB">SNB</option>
-                          <option value="KIR">KIR</option>
-                          <option value="SDF">SDF</option>
+                          <?php
+                          if ($result->num_rows > 0) {
+                              while($row = $result->fetch_assoc()) {
+                                  echo '<option value="' . htmlspecialchars($row['nama_ekstra']) . '">' . htmlspecialchars($row['nama_ekstra']) . '</option>';
+                              }
+                          }
+                          ?>
                         </select>
                       </div>
                       <button type="submit" class="btn btn-success">Register</button>

@@ -5,7 +5,7 @@ if (!isset($_SESSION['username'])) {
 }
 
 if ($_SESSION['user_tipe'] !== 'admin') {
-  header("Location: pages/dashboard-siswa.php");
+  header("Location: ../pages/dashboard-siswa.php");
   exit();
 }
 ?>
@@ -202,55 +202,29 @@ if ($_SESSION['user_tipe'] !== 'admin') {
                     <div class="icon icon-shape icon-lg text-center border-radius-lg">
                       <i class="material-icons opacity-10">print</i>
                     </div>
-                    <span class="text-white text-uppercase text-bold">GENERATE Lapoaran</span>
+                    <span class="text-white text-uppercase font-weight-bold">Generate Laporan</span>
                   </div>
                 </div>
                 <div class="card-body p-3">
-                  <div class="card-body pt-1 p-3 text-left">
-                    <div class="justify-content-start">
-                      <div class="d-flex flex-column ">
-                        <div class="col-md-12 p-3">
-                          <div class="card">
-                            <h4 class="text-primary p-3"><b>Laporan Absen Siswa</b></h4>
-                            <form method="POST" action="../assets/config/generate_csv.php">
-                              <div class="p-3">
-                                <label for="ekstra" class="form-label text-bold">Pilih Ekstra</label>
-                                <select class="form-select" id="ekstra" name="ekstra">
-                                  <option value="SNB">SNB</option>
-                                  <option value="Humas">Humas</option>
-                                </select>
-                              </div>
-                              <button type="submit" class="btn btn-primary">Generate CSV</button>
-                            </form>
-                            <br>
-                            <div class="mt-auto d-flex flex-column p-3">
-                              <button type="submit" name="type" value="pdf" class="btn btn-danger pl-3">
-                                <div class="row align-items-center">
-                                  <div class="col-auto">
-                                    <i class="material-icons" style="font-size: 32px;">print</i>
-                                  </div>
-                                  <div class="col">
-                                    <div class="text-start">
-                                      <h4 class="d-inline"><b>Generate pdf</b></h4>
-                                    </div>
-                                  </div>
-                                </div>
-                              </button>
-                              <button type="submit" name="type" value="doc" class="btn btn-info pl-3">
-                                <div class="row align-items-center">
-                                  <div class="col-auto">
-                                    <i class="material-icons" style="font-size: 32px;">description</i>
-                                  </div>
-                                  <div class="col">
-                                    <div class="text-start">
-                                      <h4 class="d-inline"><b>Generate doc</b></h4>
-                                    </div>
-                                  </div>
-                                </div>
-                              </button>
-                            </div>
+                  <div class="text-left">
+                    <div class="d-flex flex-column">
+                      <div class="col-md-12 p-3">
+                        <h4 class="text-primary p-3 pb-0"><b>Laporan Absen Siswa</b></h4>
+                        <form method="POST" action="../assets/config/generate_csv.php">
+                          <div class="p-3">
+                            <label for="ekstra" class="form-label fw-bold">Pilih Ekstra</label>
+                            <select class="form-select ps-2" id="ekstra" name="ekstra">
+                              <option value="SNB">SNB</option>
+                              <option value="Humas">Humas</option>
+                            </select>
                           </div>
-                        </div>
+                          <div class="d-flex justify-content-center p-2 pt-4">
+                            <button type="submit" name="type" value="pdf" class="btn btn-info d-flex align-items-center">
+                              <i class="material-icons me-2" style="font-size: 32px;">description</i>
+                              <span class="mb-0 "><b>Generate CSV</b></span>
+                            </button>
+                          </div>
+                        </form>
                       </div>
                     </div>
                   </div>
@@ -259,98 +233,31 @@ if ($_SESSION['user_tipe'] !== 'admin') {
             </div>
           </div>
         </div>
-        <div class="col-lg-4">
-          <div class="card h-100">
-            <div class="card-header pb-0 p-3">
-              <div class="row">
-                <div class="col-6 d-flex align-items-center">
-                  <h6 class="mb-0">Hasil</h6>
-                </div>
-                <div class="col-6 text-end p-3">
-                  <button class="btn btn-outline-primary btn-sm mb-0">View All</button>
-                </div>
-              </div>
-            </div>
-            <div class="card-body p-3 pb-0">
+        <div class="col-lg-4 pt-4">
+          <div class="card  shadow-lg border-0">
+            <div class="card-body p-3 pb-4">
+              <h4 class="text-primary p-3 pb-0 text-center"><b>Petunjuk</b></h4>
+              <hr>
               <ul class="list-group">
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                <li class="list-group-item border-0 d-flex justify-content-between align-items-center ps-0 mb-1 border-radius-lg">
                   <div class="d-flex align-items-center">
-                    <h6 class="mb-1 text-dark font-weight-bold">pdf-01.pdf</h6>
+                    <span class="me-2"><i class="bi bi-file-earmark-spreadsheet"></i></span>
+                    <span>1. <a href="https://cloudconvert.com/csv-to-xlsx" class="text-decoration-none" target="_blank">ubah file csv ke xlsx</a></span>
                   </div>
-                  <div class="d-flex align-items-end">
-                    <button class="btn btn-link text-dark  mb-0 px-0 ms-4"><i
-                        class="material-icons text-lg position-relative me-1">picture_as_pdf</i> PDF</button>
-                    <button class="btn btn-link text-dark mb-0 px-0 ms-4"><i
-                        class="material-icons text-lg position-relative me-1">download</i> Unduh</button>
-                  </div>
+                  <span class="badge bg-primary rounded-pill">New</span>
                 </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                <li class="list-group-item border-0 d-flex justify-content-between align-items-center ps-0 mb-1 border-radius-lg">
                   <div class="d-flex align-items-center">
-                    <h6 class="mb-1 text-dark font-weight-bold">pdf-02.pdf</h6>
+                    <span class="me-2"><i class="bi bi-file-earmark-pdf"></i></span>
+                    <span>2. <a href="https://cloudconvert.com/csv-to-pdf" class="text-decoration-none" target="_blank">ubah file csv ke pdf</a></span>
                   </div>
-                  <div class="d-flex align-items-end ">
-                    <button class="btn btn-link text-dark mb-0 px-0 ms-4"><i
-                        class="material-icons text-lg position-relative me-1">picture_as_pdf</i> PDF</button>
-                    <button class="btn btn-link text-dark mb-0 px-0 ms-4"><i
-                        class="material-icons text-lg position-relative me-1">download</i> Unduh</button>
-                  </div>
+                  <span class="badge bg-success rounded-pill">New</span>
                 </li>
-                <li class="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                  <div class="d-flex align-items-center">
-                    <h6 class="mb-1 text-dark font-weight-bold">doc-01.docs</h6>
-                  </div>
-                  <div class="d-flex align-items-end ">
-                    <button class="btn btn-link text-dark mb-0 px-0 ms-4"><i
-                        class="material-icons text-lg position-relative me-0">description</i> DOCS</button>
-                    <button class="btn btn-link text-dark mb-0 px-0 ms-4"><i
-                        class="material-icons text-lg  me-1">download</i> Unduh</button>
-                  </div>
-                </li>
-                <div class="card-body p-3 pb-0">
-                  <div id="Laporan">
-                    <p class="text-center mt-3">File laporan   muncul disini</p>
-                  </div>
-                </div>
               </ul>
             </div>
           </div>
         </div>
       </div>
-      <!-- <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                made with <i class="fa fa-heart"></i> by
-                <a href="https://www.creative-tim.com" class="font-weight-bold" target="_blank">Creative Tim</a>
-                for a better web.
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/presentation" class="nav-link text-muted" target="_blank">About
-                    Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/blog" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://www.creative-tim.com/license" class="nav-link pe-0 text-muted"
-                    target="_blank">License</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer> -->
     </div>
   </main>
   <div class="fixed-plugin">

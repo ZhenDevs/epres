@@ -5,21 +5,42 @@ if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
 
-$ekstra = isset($_GET['ekstra']) ? $_GET['ekstra'] : '';
-
-$sql = "SELECT user, ekstra, keterangan, waktu FROM presensi";
-if (!empty($ekstra)) {
-  $sql .= " WHERE ekstra = ?";
+if ($_SESSION['user_tipe'] !== 'admin') {
+  header("Location: ../pages/dashboard-siswa.php");
+  exit();
 }
 
+// Query untuk mendapatkan ekstra yang tersedia
+$queryEkstra = "SELECT nama_ekstra FROM ekstra";
+$ekstraResult = $is_connect->query($queryEkstra);
+
+// Mendapatkan ekstra yang dipilih dari parameter GET
+$selectedEkstra = isset($_GET['ekstra']) ? $_GET['ekstra'] : '';
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$perPage = 7;
+$offset = ($currentPage - 1) * $perPage;
+
+// Query total data dengan mempertimbangkan ekstra yang dipilih
+$totalQuery = "SELECT COUNT(*) as total FROM presensi" . (!empty($selectedEkstra) ? " WHERE ekstra = '$selectedEkstra'" : "");
+$totalResult = $is_connect->query($totalQuery);
+$totalRow = $totalResult->fetch_assoc();
+$totalPages = ceil($totalRow['total'] / $perPage);
+
+// Query ambil data dengan mempertimbangkan ekstra yang dipilih
+$sql = "SELECT user, ekstra, keterangan, waktu FROM presensi";
+if (!empty($selectedEkstra)) {
+  $sql .= " WHERE ekstra = ?";
+}
+$sql .= " LIMIT $offset, $perPage";
+
 $stmt = $is_connect->prepare($sql);
-if (!empty($ekstra)) {
-  $stmt->bind_param("s", $ekstra);
+if (!empty($selectedEkstra)) {
+  $stmt->bind_param("s", $selectedEkstra);
 }
 $stmt->execute();
 $result = $stmt->get_result();
-
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -90,6 +111,22 @@ $result = $stmt->get_result();
               <i class="material-icons opacity-10">person</i>
             </div>
             <span class="nav-link-text ms-1">Data Siswa</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/tambah-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">add</i>
+            </div>
+            <span class="nav-link-text ms-1">Tambah Ekstra</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/hapus-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">delete</i>
+            </div>
+            <span class="nav-link-text ms-1">Hapus Ekstra</span>
           </a>
         </li>
         <li class="nav-item">
@@ -250,6 +287,18 @@ $result = $stmt->get_result();
                   </tbody>
                 </table>
               </div>
+              <nav>
+              <nav>
+              <ul class="pagination justify-content-center my-4">
+                  <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                  <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
+                      <a class="page-link <?php echo $i == $currentPage ? 'bg-primary text-white' : 'text-primary'; ?>" href="?page=<?php echo $i; ?>&ekstra=<?php echo urlencode($selectedEkstra); ?>">
+                          <?php echo $i; ?>
+                      </a>
+                  </li>
+                  <?php endfor; ?>
+              </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -267,12 +316,18 @@ $result = $stmt->get_result();
             <form>
               <div class="mb-3">
                 <label for="ekstraah" class="form-label">Pilih Ekstrakurikuler</label>
-                <select id="ekstraah" class="form-select form-select-sm" name="ekstraah">
-                  <option value="">...</option>
+                <select id="ekstraah" class="form-select form-select-sm" name="ekstraah" onchange="updateEkstra(this.value)">
+                  <option>...</option>
                   <option value="">Keseluruhan</option>
-                  <option value="SNB">SNB</option>
-                  
-                </select>
+                  <?php
+                  if ($ekstraResult->num_rows > 0) {
+                      while($row = $ekstraResult->fetch_assoc()) {
+                          $isSelected = ($selectedEkstra == $row['nama_ekstra']) ? 'selected' : '';
+                          echo '<option value="' . htmlspecialchars($row['nama_ekstra']) . '" ' . $isSelected . '>' . htmlspecialchars($row['nama_ekstra']) . '</option>';
+                      }
+                  }
+                  ?>
+                </select
               </div>
             </form>
           </div>
@@ -374,21 +429,12 @@ $result = $stmt->get_result();
   <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('ekstraah').addEventListener('change', function() {
-        var ekstra = this.value;
-        console.log("Selected ekstra:", ekstra);
-
-        // Mengubah URL dengan parameter ekstra yang dipilih atau menghapus parameter jika ekstra adalah ''
-        if (ekstra === '') {
-            history.pushState({}, '', 'data-absensi-siswa.php');
-        } else {
-            history.pushState({ekstra: ekstra}, '', `data-absensi-siswa.php?ekstra=${ekstra}`);
-        }
-
-        // Reload halaman setiap kali opsi dipilih
-        window.location.reload();
-    });
+    var ekstra = this.value;
+    var currentPage = <?php echo json_encode($currentPage); ?>;
+    var newUrl = 'data-absensi-siswa.php?page=' + currentPage + '&ekstra=' + encodeURIComponent(ekstra);
+    history.pushState({ekstra: ekstra}, '', newUrl);
+    window.location.reload();
 });
     </script>
   <script>

@@ -5,6 +5,11 @@ if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
 
+if ($_SESSION['user_tipe'] !== 'admin') {
+  header("Location: ../pages/dashboard-siswa.php");
+  exit();
+}
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $startTime = $_POST['startTime'];
   $endTime = $_POST['endTime'];
@@ -101,6 +106,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <i class="material-icons opacity-10">person</i>
             </div>
             <span class="nav-link-text ms-1">Data Siswa</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/tambah-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">add</i>
+            </div>
+            <span class="nav-link-text ms-1">Tambah Ekstra</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/hapus-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">delete</i>
+            </div>
+            <span class="nav-link-text ms-1">Hapus Ekstra</span>
           </a>
         </li>
         <li class="nav-item">

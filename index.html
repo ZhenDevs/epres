@@ -30,6 +30,57 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
   <link rel="icon" type="image/png" href="./assets/img/logos/logo-1.png">
   <title>ePRESS</title>
+  <style>
+    .wave-container {
+      background: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wave {
+      position: relative;
+      width: 100%;
+      height: 100px;
+      background: #002939; /* Warna dasar background wave */
+    }
+
+    .wave:before, .wave:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 200%;
+      height: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      border-radius: 100% 50%;
+    }
+
+    .wave:before {
+      top: 60px; /* Sesuaikan posisi vertikal */
+      animation: waveAnimation 10s infinite linear;
+      opacity: 0.6; /* Sesuaikan transparansi */
+    }
+
+    .wave:after {
+      top: 70px; /* Sesuaikan posisi vertikal */
+      animation: waveAnimation 10s infinite linear reverse;
+      opacity: 0.8; /* Sesuaikan transparansi */
+    }
+
+    @keyframes waveAnimation {
+      0% {
+        transform: translateX(-50%) translateY(0);
+      }
+      50% {
+        transform: translateX(-50%) translateY(-10px);
+      }
+      100% {
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+  </style>
+
 </head>
 
 <body data-spy="scroll" data-target="#navbar-spy" data-offset="100">
@@ -84,6 +135,10 @@
       </div>
     </div>
   </section>
+
+  <div class="wave-container">
+    <div class="wave">
+  </div>
 
   <!-- Service -->
   <section class="service section-margin" id="service">
@@ -193,7 +248,7 @@
         </div>
       </div>
       <div class="row mt-4">
-        <div class="col-lg-6 text-center mt-4 d-none d-lg-block">
+        <div class="col-lg-6 text-center mt-4">
           <img src="./assets/img/Landing-Page/cewe-berpikir.png" class="img-fluid rounded-3" width="800" alt="">
         </div>
         <div class="col-lg-6 mt-4">
@@ -254,13 +309,7 @@
             <li><a href="#">About Us</a></li>
           </ul>
         </div>
-        <div class="col-lg-2 col-md-3 col4 mt-4 mt-lg-0">
-          <h5>HelpFull Link</h5>
-          <ul class="ps-0">
-            <li><a href="https://github.com/OyShan1/epres">Github</a></li>
-          </ul>
-        </div>
-        <div class="col-lg-2 col-md-3 col5 mt-4 text-white mt-lg-0">
+        <div class="col-lg-2 col-md-3 col5 mt-4 text-white mt-lg-0 me-100">
           <h5>Address</h5>
           <p>Jl. STM Pembangunan, Santren, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281</p>
 

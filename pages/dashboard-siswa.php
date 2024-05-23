@@ -170,7 +170,7 @@ $is_connect->close();
                 </div>
                 <form method="post" action="../assets/config/presensi.php">
                   <div class="p-3">
-                  <select class="form-select" name="id_ekstra">
+                  <select class="form-select ps-2" name="id_ekstra">
                     <option value="<?php echo $_SESSION['ekstraa']; ?>"><?php echo $_SESSION['ekstraa']; ?></option>
                   </select>
                   </div>
@@ -317,18 +317,24 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Menangani klik tombol presensi
   document.getElementById('presensiButton').addEventListener('click', function(event) {
-    const hasPresenced = localStorage.getItem('hasPresenced');
-    if (hasPresenced === 'true') {
-      event.preventDefault(); // Menghentikan form dari pengiriman
-      Swal.fire({
-        title: 'Peringatan!',
-        text: 'Anda sudah melakukan presensi.',
-        icon: 'warning',
-        confirmButtonText: 'OK'
-      });
-    } else {
-      localStorage.setItem('hasPresenced', 'true'); // Simpan status presensi
+    const lastPresencedTime = localStorage.getItem('lastPresencedTime');
+    const now = new Date();
+    if (lastPresencedTime) {
+      const lastTime = new Date(lastPresencedTime);
+      const diff = now - lastTime;
+      const hoursPassed = diff / 1000 / 60 / 60;
+      if (hoursPassed < 12) {
+        event.preventDefault(); // Menghentikan form dari pengiriman
+        Swal.fire({
+          title: 'Peringatan!',
+          text: 'Anda sudah melakukan presensi dalam 12 jam terakhir.',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
+        return;
+      }
     }
+    localStorage.setItem('lastPresencedTime', now.toISOString()); // Simpan waktu presensi terkini
   });
 });
 </script>

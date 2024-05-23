@@ -1,5 +1,5 @@
 <?php
-include 'assets/config/connect.php';
+include '../assets/config/connect.php';
 session_start();
 if (!isset($_SESSION['username'])) {
   header("Location: login.php");
@@ -13,40 +13,6 @@ if ($_SESSION['user_tipe'] !== 'admin') {
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-
-// Query umum untuk mengambil data berdasarkan hari
-$query = "SELECT h.nama_hari, e.nama_ekstra
-FROM jadwal j
-JOIN hari h ON j.hari_id = h.id
-JOIN ekstra e ON j.ekstra_id = e.id";
-
-// Eksekusi query
-$result = $is_connect->query($query);
-if (!$result) {
-    die("Query failed: " . $is_connect->error);
-}
-
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        if ($row["nama_hari"] == "senin") {
-            $seninData[] = $row;
-        } elseif ($row["nama_hari"] == "selasa") {
-            $selasaData[] = $row;
-        } elseif ($row["nama_hari"] == "rabu") {
-            $rabuData[] = $row;
-        } elseif ($row["nama_hari"] == "kamis") {
-            $kamisData[] = $row;
-        } elseif ($row["nama_hari"] == "jumat") {
-            $jumatData[] = $row;
-        }
-    }
-} else {
-    echo "No data found";
-}
-
-
-// Tutup koneksi
-$is_connect->close();
 ?>
 
 <!DOCTYPE html>
@@ -55,8 +21,8 @@ $is_connect->close();
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="./assets/img/logos/logo-1.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/logos/logo-1.png">
   <title>
     PRESS
   </title>
@@ -64,14 +30,14 @@ $is_connect->close();
   <link rel="stylesheet" type="text/css"
     href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
   <!-- Nucleo Icons -->
-  <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
   <!-- Font Awesome Icons -->
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <!-- Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
-  <link id="pagestyle" href="./assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
+  <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.0.0" rel="stylesheet" />
 </head>
 
 <body class="g-sidenav-show  bg-gray-200">
@@ -82,7 +48,7 @@ $is_connect->close();
       <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
         aria-hidden="true" id="iconSidenav"></i>
       <a class="navbar-brand m-0 pb-0" href="../epres/dashboard.php">
-        <img src="./assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
+        <img src="../assets/img/logos/logo-2.png" class="navbar-brand-img h-100" alt="main_logo">
         <span class="ms-1 font-weight-bold text-white">PRESS</span>
       </a>
     </div>
@@ -90,7 +56,7 @@ $is_connect->close();
     <div class="collapse navbar-collapse  w-auto  max-height-vh-100" id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../epres/dashboard.php">
+          <a class="nav-link text-white " href="../dashboard.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
@@ -98,7 +64,7 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="../epres/pages/dashboard-ekstra.php">
+          <a class="nav-link text-white" href="../pages/dashboard-ekstra.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">legend_toggle </i>
             </div>
@@ -106,7 +72,7 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../epres/pages/data-absensi-siswa.php">
+          <a class="nav-link text-white " href="../pages/data-absensi-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -114,7 +80,7 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../epres/pages/data-siswa.php">
+          <a class="nav-link text-white " href="../pages/data-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -122,7 +88,23 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="../epres/pages/atur-presensi.php">
+          <a class="nav-link text-white" href="../pages/tambah-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">add</i>
+            </div>
+            <span class="nav-link-text ms-1">Tambah Ekstra</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white active bg-gradient-info" href="../pages/hapus-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">delete</i>
+            </div>
+            <span class="nav-link-text ms-1">Hapus Ekstra</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/atur-presensi.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">rule</i>
             </div>
@@ -130,7 +112,7 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../epres/pages/generate-laporan.php">
+          <a class="nav-link text-white " href="../pages/generate-laporan.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">print</i>
             </div>
@@ -138,7 +120,7 @@ $is_connect->close();
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../epres/pages/dashboard-siswa.php">
+          <a class="nav-link text-white " href="../pages/dashboard-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">task_alt</i>
             </div>
@@ -149,7 +131,7 @@ $is_connect->close();
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../epres/pages/profile-admin.php">
+          <a class="nav-link text-white " href="../pages/profile-admin.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -174,7 +156,7 @@ $is_connect->close();
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Epres</a></li>
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
             <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
           </ol>
         </nav>
@@ -234,193 +216,41 @@ $is_connect->close();
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-      <div class="row justify-content-center">
-        <div class="mt-4 mb-5 col-lg-9 grid-margin">
-          <div class="card">
-            <div class="p-2 pt-2">
-              <div class="card-header p-0 position-relative mt-n4 mx-2 z-index-2 bg-transparent">
-                <div class="bg-gradient-info shadow-primary border-radius-lg py-3 pe-1 pt-4 p-0">
-                  <div class="text-white text-capitalize">
-                    <p class="text-center fw-bold" style="font-size: 25px;">JADWAL</p>
-                  </div>
-                </div>
-              </div>
-              </br>
-              <div class="mx-3 position-relative p-0">
-                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                  <div class="carousel-inner">
-                    <div class="carousel-item active">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Senin
-                        </div>
-                        <ul class="list-group list-group-flush">
-                        <?php if (!empty($seninData)) : ?>
-                          <?php foreach ($seninData as $dataSenin) : ?>
-                          <li class="list-group-item">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <span><?php echo $dataSenin["nama_ekstra"]; ?></span>
-                            </div>
-                          </li>
-                          <?php endforeach; ?>
-                        <?php else : ?>
-                          <li class="list-group-item">Tidak ada data</li>
-                        <?php endif; ?>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                    <div class="card bg-light shadow-sm">
-                      <div class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center" style="font-size: 20px;">
-                        Selasa
-                      </div>
-                      <ul class="list-group list-group-flush">
-                        <?php if (!empty($selasaData)) : ?>
-                          <?php foreach ($selasaData as $dataSelasa) : ?>
-                            <li class="list-group-item">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <span><?php echo $dataSelasa["nama_ekstra"]; ?></span>
-                              </div>
-                            </li>
-                          <?php endforeach; ?>
-                        <?php else : ?>
-                          <li class="list-group-item">Tidak ada data</li>
-                        <?php endif; ?>
-                      </ul>
-                    </div>
-                  </div>
-                    <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Rabu
-                        </div>
-                        <ul class="list-group list-group-flush">
-                        <ul class="list-group list-group-flush">
-                        <?php if (!empty($rabuData)) : ?>
-                          <?php foreach ($rabuData as $dataRabu) : ?>
-                            <li class="list-group-item">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <span><?php echo $dataRabu["nama_ekstra"]; ?></span>
-                              </div>
-                            </li>
-                          <?php endforeach; ?>
-                        <?php else : ?>
-                          <li class="list-group-item">Tidak ada data</li>
-                        <?php endif; ?>
-                      </ul>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Kamis
-                        </div>
-                        <ul class="list-group list-group-flush">
-                        <ul class="list-group list-group-flush">
-                        <?php if (!empty($kamisData)) : ?>
-                          <?php foreach ($kamisData as $dataKamis) : ?>
-                            <li class="list-group-item">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <span><?php echo $dataKamis["nama_ekstra"]; ?></span>
-                              </div>
-                            </li>
-                          <?php endforeach; ?>
-                        <?php else : ?>
-                          <li class="list-group-item">Tidak ada data</li>
-                        <?php endif; ?>
-                      </ul>
-                        </ul>
-                      </div>
-                    </div>
-                    <div class="carousel-item">
-                      <div class="card bg-light shadow-sm">
-                        <div
-                          class="card-header bg-light text-dark text-uppercase text-bold d-flex justify-content-center align-items-center"
-                          style="font-size: 20px;">
-                          Jumat
-                        </div>
-                        <ul class="list-group list-group-flush">
-                        <ul class="list-group list-group-flush">
-                        <?php if (!empty($jumatData)) : ?>
-                          <?php foreach ($jumatData as $dataJumat) : ?>
-                            <li class="list-group-item">
-                              <div class="d-flex justify-content-between align-items-center">
-                                <span><?php echo $dataJumat["nama_ekstra"]; ?></span>
-                              </div>
-                            </li>
-                          <?php endforeach; ?>
-                        <?php else : ?>
-                          <li class="list-group-item">Tidak ada data</li>
-                        <?php endif; ?>
-                      </ul>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <br>
-                <div class="d-flex justify-content-between align-items-center ">
-                  <div class="" style="padding-left: 15px;">
-                    <a class="btn carousel-control-prev bg-secondary mt-auto" href="#carouselExampleControls"
-                    role="button" data-bs-slide="prev" style="width: 55px; height: 30px;">
-                    <span class="carousel-control-prev-icon" style="height: 20px;" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                  </a>
-                  </div>
-                  <div class="" style="padding-right: 20px;">
-                    <a class="btn carousel-control-next bg-secondary mt-auto " href="#carouselExampleControls"
-                      role="button" data-bs-slide="next" style="width: 55px; height: 30px;">
-                      <span class="carousel-control-next-icon" style="height: 20px;" aria-hidden="true"></span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Tambah Ekstra Baru</h4>
+          </div>
+          <div class="card-body">
+          <form id="formHapusEkstra" action="javascript:void(0);" method="post">
+            <div class="form-group">
+                <label for="ekstraId">Pilih Ekstra untuk Dihapus:</label>
+                <select class="form-control ps-1" id="ekstraId" name="ekstraId" required>
+                <?php
+                // Koneksi ke database
+                include '../assets/config/connect.php';
+                $sql = "SELECT id, nama_ekstra FROM ekstra";
+                $result = $is_connect->query($sql);
 
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<option value='" . $row["id"] . "'>" . $row["nama_ekstra"] . "</option>";
+                    }
+                } else {
+                    echo "<option>Tidak ada ekstra</option>";
+                }
+                ?>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-danger">Hapus Ekstra</button>
+          </form>
           </div>
         </div>
       </div>
     </div>
-    <!-- <footer class="footer py-4  ">
-        <div class="container-fluid">
-          <div class="row align-items-center justify-content-lg-between">
-            <div class="col-lg-6 mb-lg-0 mb-4">
-              <div class="copyright text-center text-sm text-muted text-lg-start">
-                ©
-                <script>
-                  document.write(new Date().getFullYear())
-                </script>,
-                Designed by
-                <a href="https://github.com/OyShan1/epres" class="font-weight-bold" target="_blank">Group 6</a>
-              </div>
-            </div>
-            <div class="col-lg-6">
-              <ul class="nav nav-footer justify-content-center justify-content-lg-end">
-                <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">Creative Tim</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">About
-                    Us</a>
-                </li>
-                <li class="nav-item">
-                  <a href="https://github.com/OyShan1/epres" class="nav-link text-muted" target="_blank">Blog</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer> -->
-    </div>
-  </main>
+  </div>
+</main>
   <div class="fixed-plugin">
     <div class="card shadow-lg">
       <div class="card-header pb-0 pt-3">
@@ -462,11 +292,12 @@ $is_connect->close();
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="./assets/js/core/popper.min.js"></script>
-  <script src="./assets/js/core/bootstrap.min.js"></script>
-  <script src="./assets/js/plugins/perfect-scrollbar.min.js"></script>
-  <script src="./assets/js/plugins/smooth-scrollbar.min.js"></script>
-  <script src="./assets/js/plugins/chartjs.min.js"></script>
+  <script src="../assets/js/core/popper.min.js"></script>
+  <script src="../assets/js/core/bootstrap.min.js"></script>
+  <script src="../assets/js/plugins/perfect-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
+  <script src="../assets/js/plugins/chartjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     var ctx = document.getElementById("chart-bars").getContext("2d");
 
@@ -714,6 +545,35 @@ $is_connect->close();
       },
     });
   </script>
+  <script>
+document.getElementById('formHapusEkstra').addEventListener('submit', function(event) {
+  event.preventDefault();
+  var formData = new FormData(this);
+
+  fetch('../assets/config/hapus-ekstra.php', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.text())
+  .then(data => {
+    Swal.fire({
+      title: data,
+      icon: 'success'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload(); // refresh web
+      }
+    });
+  })
+  .catch(error => {
+    Swal.fire({
+      title: 'Error',
+      text: 'Terjadi kesalahan saat menghapus data',
+      icon: 'error'
+    });
+  });
+});
+</script>
   <script>
     var win = navigator.platform.indexOf('Win') > -1;
     if (win && document.querySelector('#sidenav-scrollbar')) {

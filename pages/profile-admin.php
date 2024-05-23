@@ -3,6 +3,11 @@ session_start();
 if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
+
+if ($_SESSION['user_tipe'] !== 'admin') {
+  header("Location: ../pages/dashboard-siswa.php");
+  exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
