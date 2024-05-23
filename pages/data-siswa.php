@@ -287,29 +287,36 @@ $result = $is_connect->query($sql);
               </div>
               <nav>
               <ul class="pagination justify-content-center my-4">
-                <!-- <li class="page-item <?php echo $page == 1 ? 'disabled' : ''; ?>">
-                  <a class="page-link text-primary" href="<?php echo $page == 1 ? '#' : '?page=1'; ?>">First</a>
+                <li class="page-item <?php echo $page == 1 ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="<?php echo $page == 1 ? '#' : '?page=1'; ?>" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
                 </li>
 
                 <li class="page-item <?php echo $page == 1 ? 'disabled' : ''; ?>">
-                  <a class="page-link text-primary" href="<?php echo $page == 1 ? '#' : '?page=' . ($page - 1); ?>">Previous</a>
-                </li> -->
-
-                <!-- Tombol Halaman -->
+                  <a class="page-link text-primary" href="<?php echo $page == 1 ? '#' : '?page=' . ($page - 1); ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+                <!-- 
                 <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                   <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
                     <a class="page-link <?php echo $i == $page ? 'bg-primary text-white' : 'text-primary'; ?>" href="?page=<?php echo $i; ?>">
                       <?php echo $i; ?>
                     </a>
                   </li>
-                <?php endfor; ?>
+                <?php endfor; ?> -->
 
-                <!-- <li class="page-item <?php echo $page == $totalPages ? 'disabled' : ''; ?>">
-                  <a class="page-link text-primary" href="<?php echo $page == $totalPages ? '#' : '?page=' . ($page + 1); ?>">Next</a>
+                <li class="page-item <?php echo $page == $totalPages ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="<?php echo $page == $totalPages ? '#' : '?page=' . ($page + 1); ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
                 </li>
                 <li class="page-item <?php echo $page == $totalPages ? 'disabled' : ''; ?>">
-                  <a class="page-link text-primary" href="<?php echo $page == $totalPages ? '#' : '?page=' . $totalPages; ?>">Last</a>
-                </li> -->
+                  <a class="page-link text-primary" href="<?php echo $page == $totalPages ? '#' : '?page=' . $totalPages; ?>" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+                </li>
               </ul>
 
             </nav>

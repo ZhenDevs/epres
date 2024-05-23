@@ -82,6 +82,22 @@ if ($_SESSION['user_tipe'] !== 'admin') {
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/tambah-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">add</i>
+            </div>
+            <span class="nav-link-text ms-1">Tambah Ekstra</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white" href="../pages/hapus-ekstra.php">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">delete</i>
+            </div>
+            <span class="nav-link-text ms-1">Hapus Ekstra</span>
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link text-white " href="../pages/atur-presensi.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">rule</i>
@@ -212,6 +228,19 @@ if ($_SESSION['user_tipe'] !== 'admin') {
               <p class="mb-0 font-weight-normal text-sm">
                 <?php echo $_SESSION['user_tipe']; ?>
               </p>
+            </div>
+          </div>
+          <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-4 mx-auto mt-3">
+            <div class="nav-wrapper position-relative end-0">
+              <div class="row">
+                <div class="col-12">
+                  <div class="list-group list-group-horizontal">
+                    <a class="btn btn-info mx-0 p-3 pl-3 py-2" href="../pages/profile-admin.php"> <i
+                        class="material-icons mr-2">undo</i> Back
+                    </a>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

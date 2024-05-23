@@ -266,23 +266,23 @@ $result = $stmt->get_result();
                   </thead>
                   <tbody id="table-body" class="text-uppercase text-secondary text-xxs font-weight-bolder">
                     <?php
-                    $no = 1;
-                      if ($result->num_rows > 0) {
-                          // output data setiap baris
-                          while($row = $result->fetch_assoc()) {
-                              echo "<tr>";
-                              echo "<td class='ps-4'>" . $no++ . "</td>";
-                              echo "<td class='ps-4'>" . htmlspecialchars($_SESSION["nis"]) . "</td>";
-                              echo "<td class='ps-4'>" . $row["user"] . "</td>";
-                              echo "<td class='ps-4'>" . $row["ekstra"] . "</td>";
-                              echo "<td class='ps-4'>" . $row["keterangan"] . "</td>";
-                              echo "<td class='ps-4'>" . $row["waktu"] . "</td>";
-                              echo "</tr>";
-                          }
-                      } else {
-                          echo "<tr><td colspan='6' class='text-center'>0 results</td></tr>";
-                      }
-                      $is_connect->close();
+                    $no = ($currentPage - 1) * $perPage + 1;
+                    if ($result->num_rows > 0) {
+                        // output data setiap baris
+                        while($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            echo "<td class='ps-4'>" . $no++ . "</td>";
+                            echo "<td class='ps-4'>" . htmlspecialchars($_SESSION["nis"]) . "</td>";
+                            echo "<td class='ps-4'>" . $row["user"] . "</td>";
+                            echo "<td class='ps-4'>" . $row["ekstra"] . "</td>";
+                            echo "<td class='ps-4'>" . $row["keterangan"] . "</td>";
+                            echo "<td class='ps-4'>" . $row["waktu"] . "</td>";
+                            echo "</tr>";
+                        }
+                    } else {
+                        echo "<tr><td colspan='6' class='text-center'>0 results</td></tr>";
+                    }
+                    $is_connect->close();
                     ?>
                   </tbody>
                 </table>
@@ -290,14 +290,39 @@ $result = $stmt->get_result();
               <nav>
               <nav>
               <ul class="pagination justify-content-center my-4">
-                  <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <li class="page-item <?php echo $currentPage == 1 ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="?page=1&ekstra=<?php echo urlencode($selectedEkstra); ?>" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                  </a>
+                </li>
+                
+                <li class="page-item <?php echo $currentPage == 1 ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="?page=<?php echo $currentPage - 1; ?>&ekstra=<?php echo urlencode($selectedEkstra); ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+
+                <!-- <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                   <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
-                      <a class="page-link <?php echo $i == $currentPage ? 'bg-primary text-white' : 'text-primary'; ?>" href="?page=<?php echo $i; ?>&ekstra=<?php echo urlencode($selectedEkstra); ?>">
-                          <?php echo $i; ?>
-                      </a>
+                    <a class="page-link <?php echo $i == $currentPage ? 'bg-primary text-white' : 'text-primary'; ?>" href="?page=<?php echo $i; ?>&ekstra=<?php echo urlencode($selectedEkstra); ?>">
+                      <?php echo $i; ?>
+                    </a>
                   </li>
-                  <?php endfor; ?>
+                <?php endfor; ?> -->
+
+                <li class="page-item <?php echo $currentPage == $totalPages ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="?page=<?php echo $currentPage + 1; ?>&ekstra=<?php echo urlencode($selectedEkstra); ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+
+                <li class="page-item <?php echo $currentPage == $totalPages ? 'disabled' : ''; ?>">
+                  <a class="page-link text-primary" href="?page=<?php echo $totalPages; ?>&ekstra=<?php echo urlencode($selectedEkstra); ?>" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                  </a>
+                </li>
               </ul>
+
               </nav>
             </div>
           </div>
@@ -317,7 +342,7 @@ $result = $stmt->get_result();
               <div class="mb-3">
                 <label for="ekstraah" class="form-label">Pilih Ekstrakurikuler</label>
                 <select id="ekstraah" class="form-select form-select-sm" name="ekstraah" onchange="updateEkstra(this.value)">
-                  <option>...</option>
+                  <option value="">...</option>
                   <option value="">Keseluruhan</option>
                   <?php
                   if ($ekstraResult->num_rows > 0) {

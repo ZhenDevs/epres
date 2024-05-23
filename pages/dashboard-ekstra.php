@@ -19,25 +19,16 @@ if ($result) {
     $row2 = mysqli_fetch_assoc($result2);
 }
 
-// Query untuk menghitung jumlah orang di SNB
-$querySNB = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'SNB'";
-$resultSNB = mysqli_query($is_connect, $querySNB);
-$rowSNB = mysqli_fetch_assoc($resultSNB);
+// Query untuk mengambil semua ekstrakurikuler dan jumlah siswanya
+$queryEkstra = "SELECT ekstraa, COUNT(*) AS jumlah FROM user GROUP BY ekstraa";
+$resultEkstra = mysqli_query($is_connect, $queryEkstra);
+$ekstraData = [];
+$ekstraLabels = [];
 
-// Query untuk menghitung jumlah orang di SDF
-$querySDF = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'SDF'";
-$resultSDF = mysqli_query($is_connect, $querySDF);
-$rowSDF = mysqli_fetch_assoc($resultSDF);
-
-// Query untuk menghitung jumlah orang di KIR
-$queryKIR = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'KIR'";
-$resultKIR = mysqli_query($is_connect, $queryKIR);
-$rowKIR = mysqli_fetch_assoc($resultKIR);
-
-// Query untuk menghitung jumlah orang di JURNAL
-$queryJURNAL = "SELECT COUNT(*) AS ekstraa FROM user WHERE ekstraa = 'JURNAL'";
-$resultJURNAL = mysqli_query($is_connect, $queryJURNAL);
-$rowJURNAL = mysqli_fetch_assoc($resultJURNAL);
+while ($rowEkstra = mysqli_fetch_assoc($resultEkstra)) {
+    $ekstraLabels[] = $rowEkstra['ekstraa'];
+    $ekstraData[] = $rowEkstra['jumlah'];
+}
 
 
 ?>
@@ -371,85 +362,85 @@ $rowJURNAL = mysqli_fetch_assoc($resultJURNAL);
   <script src="../assets/js/plugins/smooth-scrollbar.min.js"></script>
   <script src="../assets/js/plugins/chartjs.min.js"></script>
   <script>
-    var ctx = document.getElementById("chart-bar").getContext("2d");
+var ctx = document.getElementById("chart-bar").getContext("2d");
 
-    new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: ["SNB", "SDF", "KIR", "JURNAL"],
-        datasets: [{
-          label: "Siswa",
-          tension: 0.4,
-          borderWidth: 0,
-          borderRadius: 4,
-          borderSkipped: false,
-          backgroundColor: "rgba(255, 255, 255, .8)",
-          data: [<?php echo $rowSNB['ekstraa'];?>, <?php echo $rowSDF['ekstraa'];?>, <?php echo $rowKIR['ekstraa'];?>, <?php echo $rowJURNAL['ekstraa'];?>],
-          maxBarThickness: 6
-        },],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: {
-            display: false,
-          }
+new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: <?php echo json_encode($ekstraLabels); ?>,
+    datasets: [{
+      label: "Siswa",
+      tension: 0.4,
+      borderWidth: 0,
+      borderRadius: 4,
+      borderSkipped: false,
+      backgroundColor: "rgba(255, 255, 255, .8)",
+      data: <?php echo json_encode($ekstraData); ?>,
+      maxBarThickness: 6
+    }],
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      }
+    },
+    interaction: {
+      intersect: false,
+      mode: 'index',
+    },
+    scales: {
+      y: {
+        grid: {
+          drawBorder: false,
+          display: true,
+          drawOnChartArea: true,
+          drawTicks: false,
+          borderDash: [5, 5],
+          color: 'rgba(255, 255, 255, .2)'
         },
-        interaction: {
-          intersect: false,
-          mode: 'index',
-        },
-        scales: {
-          y: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              suggestedMin: 0,
-              suggestedMax: 500,
-              beginAtZero: true,
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-              color: "#fff"
-            },
+        ticks: {
+          suggestedMin: 0,
+          suggestedMax: 500,
+          beginAtZero: true,
+          padding: 10,
+          font: {
+            size: 14,
+            weight: 300,
+            family: "Roboto",
+            style: 'normal',
+            lineHeight: 2
           },
-          x: {
-            grid: {
-              drawBorder: false,
-              display: true,
-              drawOnChartArea: true,
-              drawTicks: false,
-              borderDash: [5, 5],
-              color: 'rgba(255, 255, 255, .2)'
-            },
-            ticks: {
-              display: true,
-              color: '#f8f9fa',
-              padding: 10,
-              font: {
-                size: 14,
-                weight: 300,
-                family: "Roboto",
-                style: 'normal',
-                lineHeight: 2
-              },
-            }
-          },
+          color: "#fff"
         },
       },
-    });
+      x: {
+        grid: {
+          drawBorder: false,
+          display: true,
+          drawOnChartArea: true,
+          drawTicks: false,
+          borderDash: [5, 5],
+          color: 'rgba(255, 255, 255, .2)'
+        },
+        ticks: {
+          display: true,
+          color: '#f8f9fa',
+          padding: 10,
+          font: {
+            size: 14,
+            weight: 300,
+            family: "Roboto",
+            style: 'normal',
+            lineHeight: 2
+          },
+        }
+      },
+    },
+  },
+});
 
 
     var ctx2 = document.getElementById("chart-line").getContext("2d");

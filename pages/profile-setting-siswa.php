@@ -3,6 +3,9 @@ session_start();
 if (!isset($_SESSION['username'])) {
   header('Location: ../login.php');
 }
+include '../assets/config/connect.php';
+$sql = "SELECT nama_ekstra FROM ekstra";
+$result = $is_connect->query($sql)
 
 ?>
 <!DOCTYPE html>
@@ -50,14 +53,14 @@ if (!isset($_SESSION['username'])) {
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Presensi</span>
           </a>
         </li>
         <li class="nav-item mt-3">
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white active bg-gradient-info" href="../pages/profile-siswa.html">
+          <a class="nav-link text-white active bg-gradient-info" href="../pages/profile-siswa.php">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -69,7 +72,7 @@ if (!isset($_SESSION['username'])) {
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">login</i>
             </div>
-            <span class="nav-link-text ms-1"><?php echo $_SESSION['fullname']; ?></span>
+            <span class="nav-link-text ms-1"><?php echo $_SESSION['username']; ?></span>
           </a>
         </li>
       </ul>
@@ -162,6 +165,19 @@ if (!isset($_SESSION['username'])) {
               </p>
             </div>
           </div>
+          <div class="col-lg-auto col-md-auto my-sm-auto ms-sm-auto me-sm-4 mx-auto mt-3">
+            <div class="nav-wrapper position-relative end-0">
+              <div class="row">
+                <div class="col-12">
+                  <div class="list-group list-group-horizontal">
+                    <a class="btn btn-info mx-0 p-3 pl-3 py-2" href="../pages/profile-admin.php"> <i
+                        class="material-icons mr-2">undo</i> Back
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="row">
           <div class="row">
@@ -192,32 +208,35 @@ if (!isset($_SESSION['username'])) {
                               <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                              <div class="row mt-1 mx-3 ms-1">
-                                <div class="col-6">
-                                <form action="../assets/config/edit_ekstra.php" method="POST">
-                                <div class="form-check">
-                                  <input class="form-check-input" type="radio" name="ekstrakurikuler[]" value="SDF" id="osisCheckbox"
-                                    <?php echo (strpos($_SESSION['ekstraa'], 'SDF') !== false ? 'checked' : ''); ?>>
-                                  <label class="form-check-label" for="osisCheckbox">
-                                    SDF
-                                  </label>
-                                  <input class="form-check-input" type="radio" name="ekstrakurikuler[]" value="SNB" id="osisCheckbox"
-                                    <?php echo (strpos($_SESSION['ekstraa'], 'SNB') !== false ? 'checked' : ''); ?>>
-                                  <label class="form-check-label" for="osisCheckbox">
-                                    SNB
-                                  </label>
-                                </div>
-                                </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="submit" class="btn btn-success" data-bs-dismiss="modal">SAVE</button>
-                              </div>
-                              </form>
-                            </div>
+<div class="modal-body">
+    <div class="row mt-1 mx-3 ms-1">
+        <div class="col-12">
+            <form action="../assets/config/edit_ekstra.php" method="POST">
+                <div class="list-group">
+                    <?php
+                    if ($result->num_rows > 0) {
+                        while ($row = $result->fetch_assoc()) {
+                            $checked = strpos($_SESSION['ekstraa'], $row['nama_ekstra']) !== false ? 'checked' : '';
+                            echo '<label class="list-group-item">';
+                            echo '<input class="form-check-input me-1" type="radio" name="ekstrakurikuler[]" value="' . $row['nama_ekstra'] . '" id="' . $row['nama_ekstra'] . 'Checkbox" ' . $checked . '>';
+                            echo $row['nama_ekstra'];
+                            echo '</label>';
+                        }
+                    } else {
+                        echo "<p class='list-group-item'>0 results</p>";
+                    }
+                    ?>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
                           </div>
                         </div>
                       </div>
+                    </div>
                   </ul>
                 </div>
               </div>

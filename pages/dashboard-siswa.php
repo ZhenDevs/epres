@@ -3,7 +3,7 @@ session_start();
 include '../assets/config/connect.php';
 
 if (!isset($_SESSION['username'])) {
-  header("Location: ../login.php"); // Ganti 'login.php' dengan URL halaman login Anda
+  header("Location: ../login.php"); 
   exit();
 }
 
@@ -14,7 +14,7 @@ if ($result->num_rows > 0) {
     $startTime = $row['start_time'];
     $endTime = $row['end_time'];
 } else {
-    // Jika tidak ada waktu yang diset, gunakan nilai default
+    // ga di set waktu bakal ke 00
     $startTime = '00:00';
     $endTime = '00:00';
 }
@@ -65,7 +65,7 @@ $is_connect->close();
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">dashboard</i>
             </div>
-            <span class="nav-link-text ms-1">Dashboard</span>
+            <span class="nav-link-text ms-1">Prese</span>
           </a>
         </li>
         <li class="nav-item mt-3">
