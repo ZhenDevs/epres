@@ -11,7 +11,3 @@ Projek Epres merupakan aplikasi sistem presensi elektronik yang dikembangkan ole
 ## Deskripsi Singkat
 
 Aplikasi Epres ini memungkinkan pengguna untuk melakukan presensi secara elektronik melalui antarmuka yang intuitif dan ramah pengguna. Aplikasi ini didukung oleh berbagai fitur, termasuk manajemen pengguna, riwayat presensi, dan laporan kehadiran.
-
-## Lisensi
-
-Projek Epres dilisensikan di bawah [MIT License](LICENSE).
