@@ -23,7 +23,7 @@
 
 ## [2.1.0] 2018-06-13
 ### Bug fixing
-- Card-chart fixed on Windows
+- Card-chart fixed on Window
 - Bug fixes for responsive devices
 - Small changes for components
 
