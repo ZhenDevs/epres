@@ -172,7 +172,7 @@ ini_set('display_errors', 1);
               </a>
               <ul class="dropdown-menu dropdown-menu-end px-2 py-3 me-sm-n4" aria-labelledby="UserdropdownMenuButton">
                 <li>
-                  <a class="dropdown-item border-radius-md" href="assets/config/logout.php">
+                  <a class="dropdown-item border-radius-md" href="../assets/config/logout.php">
                     <i class="fa fa-sign-out me-sm-1"></i>
                     <span>Logout</span>
                   </a>

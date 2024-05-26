@@ -228,19 +228,29 @@ if ($_SESSION['user_tipe'] !== 'admin') {
                         <h4 class="text-primary p-3 pb-0"><b>Laporan Absen Siswa</b></h4>
                         <form method="POST" action="../assets/config/generate_csv.php">
                           <div class="p-3">
-                            <label for="ekstra" class="form-label fw-bold">Pilih Ekstra</label>
-                            <select class="form-select ps-2" id="ekstra" name="ekstra">
-                              <option value="SNB">SNB</option>
-                              <option value="Humas">Humas</option>
-                            </select>
+                              <label for="ekstra" class="form-label fw-bold">Pilih Ekstra</label>
+                              <select class="form-select ps-2" id="ekstra" name="ekstra">
+                                  <?php
+                                  include '../assets/config/connect.php';
+                                  $query = "SELECT DISTINCT ekstra from presensi";
+                                  $hasil = mysqli_query($is_connect, $query);
+                                  while ($row = mysqli_fetch_assoc($hasil)) {
+                                      echo "<option value='" . $row['ekstra'] . "'>" . $row['ekstra'] . "</option>";
+                                  }
+                                  ?>
+                              </select>
                           </div>
                           <div class="d-flex justify-content-center p-2 pt-4">
-                            <button type="submit" name="type" value="pdf" class="btn btn-info d-flex align-items-center">
-                              <i class="material-icons me-2" style="font-size: 32px;">description</i>
-                              <span class="mb-0 "><b>Generate CSV</b></span>
-                            </button>
+                              <button type="submit" name="type" value="pdf" formaction="../assets/config/generate_pdf.php" class="btn btn-info d-flex align-items-center">
+                                  <i class="material-icons me-2" style="font-size: 32px;">picture_as_pdf</i>
+                                  <span class="mb-0 "><b>Generate PDF</b></span>
+                              </button>
+                              <button type="submit" name="type" value="csv" class="btn btn-info d-flex align-items-center ms-3">
+                                  <i class="material-icons me-2" style="font-size: 32px;">description</i>
+                                  <span class="mb-0 "><b>Generate CSV</b></span>
+                              </button>
                           </div>
-                        </form>
+                      </form>
                       </div>
                     </div>
                   </div>
